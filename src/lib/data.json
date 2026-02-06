@@ -1,0 +1,23 @@
+[
+    {
+        "id": "1",
+        "title": "Vaporwave HUD Pack",
+        "description": "50+ high-quality retro-futuristic HUD elements in SVG and PNG format.",
+        "thumbnail": "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000&auto=format&fit=crop",
+        "fileCount": 54
+    },
+    {
+        "id": "2",
+        "title": "Cyberpunk UI Kit",
+        "description": "Complete design system for sci-fi interfaces. Figma and React components included.",
+        "thumbnail": "https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&w=1000&auto=format&fit=crop",
+        "fileCount": 120
+    },
+    {
+        "id": "3",
+        "title": "Abstract Texture Vault",
+        "description": "100+ unique 8K textures for high-end rendering and post-production.",
+        "thumbnail": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop",
+        "fileCount": 102
+    }
+]

@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  /* New Visual Identity */
+  --color-background: #000000;
+  --color-foreground: #EFEFEF;
+  --color-accent: #E1FD3F;
+  --color-accent-blue: #007AFF;
+
+  /* SF Pro via System Font Stack */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: #000000;
+    color: #EFEFEF;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Global Noise Texture */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background-color: rgba(225, 253, 63, 0.3);
+  }
+}
+
+@layer utilities {
+
+  /* Liquid Glass - iOS 26 Style */
+  .glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+      0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-hover {
+    @apply hover:bg-white/10 hover:border-white/15 transition-all duration-300;
+  }
+
+  /* Text Glow with new accent color */
+  .glow-text {
+    text-shadow: 0 0 20px rgba(225, 253, 63, 0.4), 0 0 40px rgba(225, 253, 63, 0.15);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 20px rgba(225, 253, 63, 0.1);
+  }
+
+  /* Input Glow Effect */
+  .input-glow:focus {
+    box-shadow: 0 0 0 2px rgba(225, 253, 63, 0.2), 0 0 20px rgba(225, 253, 63, 0.15);
+  }
+
+  /* SF Pro Weights */
+  .font-bold {
+    font-weight: 700;
+  }
+
+  .font-regular {
+    font-weight: 400;
+  }
+
+  /* Border Beam Animation */
+  @keyframes border-beam {
+    0% {
+      transform: translateX(-100%) rotate(0deg);
+    }
+
+    100% {
+      transform: translateX(200%) rotate(0deg);
+    }
+  }
+
+  .animate-border-beam {
+    animation: border-beam 4s linear infinite;
+  }
+
+  /* Scanline Animation for buttons */
+  @keyframes scan {
+    0% {
+      transform: translateX(-200%) skewX(-12deg);
+    }
+
+    100% {
+      transform: translateX(500%) skewX(-12deg);
+    }
+  }
+
+  .animate-scan {
+    animation: scan 1.5s infinite linear;
+  }
+
+  /* Pulse Glow */
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Gradient Text */
+  .text-gradient {
+    background: linear-gradient(180deg, #FFFFFF 0%, #A0A0A0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Background Patterns */
+  .bg-grid-mesh {
+    background-image:
+      linear-gradient(to right, rgba(128, 128, 128, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(128, 128, 128, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-radial-fade {
+    background-image: radial-gradient(circle at center top, rgba(225, 253, 63, 0.08), transparent 60%);
+  }
+}
+
+/* Custom Scrollbar - Dark Theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
