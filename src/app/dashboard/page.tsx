@@ -1,5 +1,7 @@
 "use client";
 
+// Force dynamic rendering - prevents SSG build errors with Supabase auth
+export const dynamic = 'force-dynamic';
 import { FuturisticBackground } from "@/components/ui/Background";
 import { Header } from "@/components/ui/Header";
 import { PRODUCTS } from "@/lib/data";
