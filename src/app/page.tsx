@@ -30,7 +30,7 @@ const BentoItem = ({ title, description, icon: Icon, className, delay = 0 }: any
 // --- Page Component ---
 export default function LandingPage() {
   return (
-    <main className="min-h-screen relative overflow-x-hidden bg-[#050505] text-[#EFEFEF]">
+    <main className="min-h-screen relative overflow-x-hidden text-[#EFEFEF]">
       <FuturisticBackground />
       <Header />
 

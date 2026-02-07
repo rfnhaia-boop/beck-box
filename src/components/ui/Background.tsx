@@ -8,11 +8,10 @@ export const FuturisticBackground = () => {
     const mouseY = useMotionValue(0);
     const [isMounted, setIsMounted] = useState(false);
 
-    // Fix: Hook called at top level
     const background = useMotionTemplate`
         radial-gradient(
             800px circle at ${mouseX}px ${mouseY}px,
-            rgba(225, 253, 63, 0.06),
+            rgba(225, 253, 63, 0.15),
             transparent 80%
         )
     `;
@@ -30,49 +29,65 @@ export const FuturisticBackground = () => {
     return (
         <div
             onMouseMove={handleMouseMove}
-            className="fixed inset-0 -z-10 overflow-hidden bg-black"
+            className="fixed inset-0 z-0 overflow-hidden bg-[#0A0A0A]"
         >
-            {/* Grid Pattern Mesh */}
-            <div className="absolute inset-0 bg-grid-mesh opacity-[0.4] pointer-events-none" />
+            {/* GRID SUPREMO - Opacidade alta e linhas nítidas */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.3]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                        <path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" strokeWidth="1" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
 
-            {/* Top Radial Fade */}
-            <div className="absolute inset-0 bg-radial-fade pointer-events-none" />
+            {/* Apenas um leve fade nas bordas extremas, mantendo o centro visível */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    background: 'radial-gradient(circle at center, transparent 0%, #0A0A0A 100%)',
+                }}
+            />
+
+            {/* Linhas de destaque horizontais brilhantes */}
+            <div className="absolute top-1/3 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E1FD3F]/40 to-transparent" />
+            <div className="absolute top-2/3 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#007AFF]/40 to-transparent" />
 
             {/* Interactive Aura - Mouse Follow */}
             {isMounted && (
                 <motion.div
-                    className="pointer-events-none absolute -inset-px opacity-40 transition duration-300"
+                    className="pointer-events-none absolute -inset-px opacity-50 transition duration-300"
                     style={{ background }}
                 />
             )}
 
-            {/* Deep Ambient Moving Blobs (Subtler) */}
+            {/* Moving Blobs for Depth */}
             <motion.div
                 animate={{
-                    x: [0, 50, 0],
-                    y: [0, -30, 0],
-                    opacity: [0.1, 0.2, 0.1],
+                    x: [0, 30, 0],
+                    y: [0, -40, 0],
+                    opacity: [0.3, 0.5, 0.3],
                 }}
                 transition={{
-                    duration: 15,
+                    duration: 10,
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-b from-[#007AFF]/20 to-transparent rounded-full blur-[120px] mix-blend-screen"
+                className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#007AFF]/10 rounded-full blur-[100px]"
             />
 
             <motion.div
                 animate={{
-                    x: [0, -50, 0],
+                    x: [0, -40, 0],
                     y: [0, 30, 0],
-                    opacity: [0.05, 0.15, 0.05],
+                    opacity: [0.2, 0.4, 0.2],
                 }}
                 transition={{
-                    duration: 18,
+                    duration: 12,
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-t from-[#E1FD3F]/10 to-transparent rounded-full blur-[100px] mix-blend-screen"
+                className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#E1FD3F]/5 rounded-full blur-[80px]"
             />
         </div>
     );

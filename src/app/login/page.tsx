@@ -2,7 +2,7 @@
 
 import { FuturisticBackground } from "@/components/ui/Background";
 import { useState, useEffect } from "react";
-import { Eye, EyeOff, Loader2, Lock, Mail, ArrowRight, AlertCircle, UserPlus } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, ArrowRight, AlertCircle, UserPlus, Building2 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,7 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [companyName, setCompanyName] = useState("");
     const [error, setError] = useState("");
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [success, setSuccess] = useState("");
@@ -75,6 +76,12 @@ export default function LoginPage() {
             return;
         }
 
+        if (mode === "signup" && !companyName) {
+            setError("Informe o nome da sua empresa");
+            setIsLoading(false);
+            return;
+        }
+
         if (password.length < 6) {
             setError("A senha deve ter pelo menos 6 caracteres");
             setIsLoading(false);
@@ -87,6 +94,9 @@ export default function LoginPage() {
                 password,
                 options: {
                     emailRedirectTo: `${window.location.origin}/dashboard`,
+                    data: {
+                        company_name: companyName,
+                    }
                 }
             });
 
@@ -201,6 +211,24 @@ export default function LoginPage() {
                     )}
 
                     <form onSubmit={mode === "login" ? handleLogin : handleSignUp} className="space-y-5">
+
+                        {mode === "signup" && (
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold uppercase tracking-widest text-white/50 pl-1">Nome da Empresa</label>
+                                <div className="relative group">
+                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 group-focus-within:text-[#E1FD3F] transition-colors" />
+                                    <input
+                                        type="text"
+                                        value={companyName}
+                                        onChange={(e) => setCompanyName(e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-12 py-3.5 outline-none focus:border-[#E1FD3F]/50 focus:bg-white/10 transition-all text-sm placeholder:text-white/20"
+                                        placeholder="Sua Empresa Ltda"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        )}
+
                         <div className="space-y-2">
                             <label className="text-xs font-bold uppercase tracking-widest text-white/50 pl-1">Email</label>
                             <div className="relative group">

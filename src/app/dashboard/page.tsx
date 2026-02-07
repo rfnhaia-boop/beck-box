@@ -65,7 +65,7 @@ export default function DashboardPage() {
     }
 
     return (
-        <main className="min-h-screen relative bg-[#050505] text-[#EFEFEF] overflow-x-hidden">
+        <main className="min-h-screen relative text-[#EFEFEF] overflow-x-hidden">
             <FuturisticBackground />
 
             {/* Futuristic Grid Mesh */}
@@ -117,7 +117,9 @@ export default function DashboardPage() {
 
                             <div>
                                 <h1 className="text-3xl font-black tracking-tight text-gradient">Bem-vindo de volta!</h1>
-                                <p className="text-white/40 text-sm font-mono">{user?.email || "agente@blackbox.com"}</p>
+                                <p className="text-[#E1FD3F] text-sm font-bold tracking-[0.2em] uppercase mt-1">
+                                    {user?.user_metadata?.company_name || user?.user_metadata?.full_name || "Membro de Elite"}
+                                </p>
                             </div>
                         </div>
 
@@ -200,7 +202,7 @@ export default function DashboardPage() {
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {PRODUCTS.filter(p => p.id !== "all").slice(0, 3).map((product, index) => (
                             <ProductCard key={product.id} product={product} index={index} />
                         ))}
@@ -211,15 +213,15 @@ export default function DashboardPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.15 }}
                                 whileHover={{ scale: 1.02, y: -4 }}
-                                className="group relative h-full min-h-[280px] rounded-3xl bg-gradient-to-br from-[#E1FD3F]/10 to-[#007AFF]/10 border border-white/10 hover:border-[#E1FD3F]/40 transition-all duration-300 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden"
+                                className="group relative h-full min-h-[220px] rounded-[28px] bg-gradient-to-br from-[#E1FD3F]/10 to-[#007AFF]/10 border border-white/10 hover:border-[#E1FD3F]/40 transition-all duration-300 flex flex-col items-center justify-center gap-3 cursor-pointer overflow-hidden"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#E1FD3F]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <div className="w-16 h-16 rounded-2xl bg-[#E1FD3F]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <Zap className="w-8 h-8 text-[#E1FD3F]" />
+                                <div className="w-12 h-12 rounded-xl bg-[#E1FD3F]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <Zap className="w-6 h-6 text-[#E1FD3F]" />
                                 </div>
                                 <div className="text-center relative z-10">
-                                    <p className="text-xl font-black text-white mb-1">Ver Todos</p>
-                                    <p className="text-sm text-white/40">Biblioteca completa</p>
+                                    <p className="text-lg font-black text-white mb-0.5">Ver Todos</p>
+                                    <p className="text-xs text-white/40">Biblioteca completa</p>
                                 </div>
                             </motion.div>
                         </Link>

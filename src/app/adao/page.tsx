@@ -1,5 +1,6 @@
 "use client";
 
+import { FuturisticBackground } from "@/components/ui/Background";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Plus, Trash2, Loader2, MessageSquare, Menu, X, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
@@ -101,24 +102,24 @@ export default function AdaoPage() {
             timestamp: new Date()
         };
 
-        // Update conversation title if first message
+        setInput("");
+        setIsLoading(true);
+
         setConversations(prev => prev.map(c => {
             if (c.id === convId) {
-                const isFirstMessage = c.messages.length === 0;
-                return {
-                    ...c,
-                    title: isFirstMessage ? input.slice(0, 30) + (input.length > 30 ? "..." : "") : c.title,
-                    messages: [...c.messages, userMessage]
-                };
+                return { ...c, messages: [...c.messages, userMessage] };
             }
             return c;
         }));
 
-        setInput("");
-        setIsLoading(true);
-
         const currentConv = conversations.find(c => c.id === convId);
-        const allMessages = [...(currentConv?.messages || []), userMessage];
+        // Include the new user message in the history sent to API
+        // Note: activeConversation might stick to old state in this closure, 
+        // so we use the functional update results layout or helper, 
+        // but here we know we just added it.
+        // Actually safe to just use previous messages + new one.
+        const previousMessages = currentConv ? currentConv.messages : [];
+        const allMessages = [...previousMessages, userMessage];
 
         try {
             const response = await fetch("/api/chat", {
@@ -167,36 +168,20 @@ export default function AdaoPage() {
     };
 
     return (
-        <div className="h-screen flex bg-[#0a0a0a] text-white overflow-hidden relative">
-            {/* Background Aura */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute inset-0 bg-grid-mesh opacity-[0.2]" />
-                <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.5, 0.3],
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                    }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-radial-gradient from-[#E1FD3F]/10 to-transparent rounded-full blur-[100px]"
-                />
-            </div>
+        <div className="h-screen flex text-white overflow-hidden relative">
+            <FuturisticBackground />
 
-            {/* Sidebar */}
             <AnimatePresence>
                 {sidebarOpen && (
                     <motion.aside
-                        initial={{ x: -300, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -300, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="w-72 bg-[#171717]/80 backdrop-blur-xl flex flex-col border-r border-white/10 z-20 relative"
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: 280, opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        className="h-full bg-[#0a0a0a]/80 backdrop-blur-xl border-r border-white/10 flex flex-col z-20"
                     >
                         {/* Sidebar Header */}
-                        <div className="p-4 border-b border-white/10">
+                        <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                            <span className="font-bold text-white/80">Conversas</span>
                             <button
                                 onClick={createNewConversation}
                                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-sm font-medium hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]"
