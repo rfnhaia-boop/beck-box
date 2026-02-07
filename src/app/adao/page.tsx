@@ -1,7 +1,5 @@
 "use client";
 
-// Force dynamic rendering - prevents SSG build errors
-export const dynamic = 'force-dynamic';
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Plus, Trash2, Loader2, MessageSquare, Menu, X, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
