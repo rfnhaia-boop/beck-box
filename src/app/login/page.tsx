@@ -108,8 +108,10 @@ export default function LoginPage() {
 
             setSuccess("Conta criada! Verifique seu email para confirmar.");
             setIsLoading(false);
-        } catch {
-            setError("Erro ao criar conta. Tente novamente.");
+        } catch (err: unknown) {
+            console.error("Signup error:", err);
+            const errorMessage = err instanceof Error ? err.message : "Erro desconhecido ao criar conta.";
+            setError(errorMessage);
             setIsLoading(false);
         }
     };
@@ -118,15 +120,23 @@ export default function LoginPage() {
         setIsLoading(true);
         setError("");
 
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: `${window.location.origin}/auth/callback`,
-            }
-        });
+        try {
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: `${window.location.origin}/auth/callback`,
+                }
+            });
 
-        if (error) {
-            setError(error.message);
+            if (error) {
+                console.error("Google OAuth error:", error);
+                setError(error.message);
+                setIsLoading(false);
+            }
+        } catch (err: unknown) {
+            console.error("Google login error:", err);
+            const errorMessage = err instanceof Error ? err.message : "Erro ao conectar com Google.";
+            setError(errorMessage);
             setIsLoading(false);
         }
     };
