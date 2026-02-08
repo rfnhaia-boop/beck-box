@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { FloatingAdao } from "@/components/ui/FloatingAdao";
 
 export const metadata: Metadata = {
   title: "BLACK BOX - Sua Biblioteca Digital",
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <body className="font-sans antialiased" suppressHydrationWarning>
         {children}
+        <FloatingAdao />
       </body>
     </html>
   );

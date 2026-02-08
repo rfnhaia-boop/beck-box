@@ -26,7 +26,7 @@ export default function LoginPage() {
         const checkUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
-                router.push("/dashboard");
+                router.push("/sede");
             }
         };
         checkUser();
@@ -56,7 +56,7 @@ export default function LoginPage() {
                 return;
             }
 
-            router.push("/dashboard");
+            router.push("/sede");
             router.refresh();
         } catch {
             setError("Erro ao fazer login. Tente novamente.");
@@ -93,7 +93,7 @@ export default function LoginPage() {
                 email,
                 password,
                 options: {
-                    emailRedirectTo: `${window.location.origin}/dashboard`,
+                    emailRedirectTo: `${window.location.origin}/sede`,
                     data: {
                         company_name: companyName,
                     }

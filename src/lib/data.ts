@@ -6,6 +6,7 @@ export interface Product {
     color: string;
     thumbnail?: string;
     link?: string;
+    eliteOnly?: boolean;
 }
 
 export const PRODUCTS: Product[] = [
@@ -16,15 +17,34 @@ export const PRODUCTS: Product[] = [
         icon: "bot",
         color: "text-[#E1FD3F] bg-[#E1FD3F]/10",
         thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop",
-        link: "/adao"
+        link: "/adao",
+        eliteOnly: true
+    },
+    {
+        id: "antigravity",
+        title: "Anti-Gravity",
+        description: "Dashboard avançado de performance e métricas em tempo real.",
+        icon: "zap",
+        color: "text-[#A855F7] bg-[#A855F7]/10",
+        thumbnail: "https://images.unsplash.com/photo-1639322537231-2f206e06af84?q=80&w=1000&auto=format&fit=crop",
+        eliteOnly: true
+    },
+    {
+        id: "management",
+        title: "Gestão 360",
+        description: "Controle total de operações, equipes e automações.",
+        icon: "grid",
+        color: "text-[#A855F7] bg-[#A855F7]/10",
+        thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
+        eliteOnly: true
     },
     {
         id: "automations",
-        title: "Automações n8n",
-        description: "Gerencie e execute seus workflows de automação.",
-        icon: "zap",
+        title: "Orçamento Digital",
+        description: "Crie, gerencie e envie propostas comerciais profissionais.",
+        icon: "file-text",
         color: "text-[#E1FD3F] bg-[#E1FD3F]/10",
-        thumbnail: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=1000&auto=format&fit=crop",
+        thumbnail: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1000&auto=format&fit=crop",
         link: "/automations"
     },
     {
@@ -62,7 +82,7 @@ export const PRODUCTS: Product[] = [
     {
         id: "all",
         title: "Ver todos",
-        description: "Acesse a biblioteca completa",
+        description: "Acesse o bunker completo",
         icon: "grid",
         color: "text-white/40 bg-white/5",
         link: "/library"

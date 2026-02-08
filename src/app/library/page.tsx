@@ -7,8 +7,12 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { motion } from "framer-motion";
 import { Search, Grid, List, Shield, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 
 export default function LibraryPage() {
+    const supabase = createClient();
+    const [user, setUser] = useState<SupabaseUser | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const [isMounted, setIsMounted] = useState(false);
@@ -21,9 +25,15 @@ export default function LibraryPage() {
             setMousePos({ x: e.clientX, y: e.clientY });
         };
 
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        };
+        getUser();
+
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
+    }, [supabase.auth]);
 
     const filteredProducts = PRODUCTS.filter(p =>
         p.id !== "all" &&
@@ -62,18 +72,15 @@ export default function LibraryPage() {
 
             <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto relative z-10">
 
-                {/* Header with Gradient Title */}
+                {/* Centered Title from Screenshot */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-12 text-center"
+                    className="mb-16 text-center"
                 >
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 text-gradient">
-                        Biblioteca
+                    <h1 className="text-4xl md:text-5xl font-black tracking-[0.2em] mb-4 text-white/40 uppercase">
+                        Bunker
                     </h1>
-                    <p className="text-white/50 text-lg max-w-2xl mx-auto">
-                        Acesse todos os seus assets premium. Contratos, apresentações, vídeo aulas e muito mais.
-                    </p>
                 </motion.div>
 
                 {/* Search & Filters */}
@@ -145,57 +152,56 @@ export default function LibraryPage() {
                         }>
                             {filteredProducts.map((product, index) => (
                                 viewMode === "grid" ? (
-                                    <ProductCard key={product.id} product={product} index={index} />
+                                    <ProductCard
+                                        key={product.id}
+                                        product={product}
+                                        index={index}
+                                        isEliteUser={user?.user_metadata?.plan === 'elite'}
+                                    />
                                 ) : (
                                     <motion.a
                                         key={product.id}
-                                        href={`/product/${product.id}`}
+                                        href={product.eliteOnly && user?.user_metadata?.plan !== 'elite' ? '#' : (product.link || `/product/${product.id}`)}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.05 }}
-                                        whileHover={{ scale: 1.01, x: 4 }}
-                                        className="flex items-center gap-6 p-6 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/[0.08] 
-                                                   hover:border-[#E1FD3F]/40 transition-all group relative overflow-hidden"
+                                        whileHover={product.eliteOnly && user?.user_metadata?.plan !== 'elite' ? {} : { scale: 1.01, x: 4 }}
+                                        className={`flex items-center gap-6 p-6 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/[0.08] 
+                                                   ${product.eliteOnly && user?.user_metadata?.plan !== 'elite' ? 'cursor-not-allowed opacity-50' : 'hover:border-[#E1FD3F]/40 transition-all group relative overflow-hidden'}`}
                                     >
                                         {/* Spotlight on hover */}
-                                        <div className="absolute inset-0 bg-gradient-to-r from-[#E1FD3F]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        {!(product.eliteOnly && user?.user_metadata?.plan !== 'elite') && (
+                                            <div className="absolute inset-0 bg-gradient-to-r from-[#E1FD3F]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        )}
 
-                                        <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 ring-1 ring-white/10 group-hover:ring-[#E1FD3F]/30 transition-all">
+                                        <div className={`w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 ring-1 ring-white/10 ${!(product.eliteOnly && user?.user_metadata?.plan !== 'elite') && 'group-hover:ring-[#E1FD3F]/30 transition-all'}`}>
                                             {product.thumbnail && (
-                                                <img src={product.thumbnail} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                <img src={product.thumbnail} alt={product.title} className={`w-full h-full object-cover ${!(product.eliteOnly && user?.user_metadata?.plan !== 'elite') && 'group-hover:scale-110 transition-transform duration-500'}`} />
                                             )}
                                         </div>
                                         <div className="flex-grow relative z-10">
-                                            <h3 className="text-lg font-bold text-white group-hover:text-[#E1FD3F] transition-colors">{product.title}</h3>
+                                            <div className="flex items-center gap-2">
+                                                <h3 className={`text-lg font-bold text-white ${!(product.eliteOnly && user?.user_metadata?.plan !== 'elite') && 'group-hover:text-[#E1FD3F]'} transition-colors`}>{product.title}</h3>
+                                                {product.eliteOnly && (
+                                                    <span className="px-1.5 py-0.5 rounded-full bg-[#A855F7]/20 border border-[#A855F7]/40 text-[8px] font-bold text-[#A855F7] uppercase tracking-wider">Elite</span>
+                                                )}
+                                            </div>
                                             <p className="text-sm text-white/50">{product.description}</p>
                                         </div>
-                                        <div className="text-[#E1FD3F] text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 relative z-10">
-                                            Acessar <Zap className="w-4 h-4" />
-                                        </div>
+                                        {product.eliteOnly && user?.user_metadata?.plan !== 'elite' ? (
+                                            <div className="text-red-400 text-xs font-bold flex items-center gap-2">
+                                                Bloqueado <Shield className="w-4 h-4" />
+                                            </div>
+                                        ) : (
+                                            <div className="text-[#E1FD3F] text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 relative z-10">
+                                                Acessar <Zap className="w-4 h-4" />
+                                            </div>
+                                        )}
                                     </motion.a>
                                 )
                             ))}
                         </div>
                     )}
-                </motion.div>
-
-                {/* Stats Footer with Terminal Style */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="mt-16 flex items-center justify-center gap-6"
-                >
-                    <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-black/40 backdrop-blur-xl border border-white/10">
-                        <Shield className="w-4 h-4 text-[#E1FD3F]" />
-                        <span className="text-xs font-mono text-white/40 uppercase tracking-wider">
-                            {filteredProducts.length} produtos disponíveis
-                        </span>
-                        <span className="text-white/20">•</span>
-                        <span className="text-xs font-mono text-[#E1FD3F] uppercase tracking-wider">
-                            Acesso Vitalício
-                        </span>
-                    </div>
                 </motion.div>
             </div>
         </main>
