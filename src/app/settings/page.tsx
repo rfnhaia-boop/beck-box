@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FuturisticBackground } from "@/components/ui/Background";
 import { Header } from "@/components/ui/Header";
 import {
-    Upload, Check, Loader2, User, Building2,
+    Check, Loader2, User, Building2,
     Camera, Trash2, Save, ArrowLeft, Shield, FileText, CreditCard, LifeBuoy
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -68,7 +68,7 @@ export default function SettingsPage() {
         setLoading(false);
     };
 
-    const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file || !user) return;
 
