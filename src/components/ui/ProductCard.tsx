@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, Variants } from "framer-motion";
 import Link from "next/link";
 import { FileText, Presentation, Video, Download, LayoutGrid, Bot, Zap, Lock, Crown } from "lucide-react";
 import { Product } from "@/lib/data";
@@ -49,7 +49,7 @@ export const ProductCard = ({ product, index = 0, isEliteUser = true }: ProductC
     const isViewAll = id === 'all';
 
     // Spring animation variant for staggered entry
-    const cardVariants = {
+    const cardVariants: Variants = {
         hidden: { opacity: 0, y: 30, scale: 0.95 },
         visible: {
             opacity: 1,
