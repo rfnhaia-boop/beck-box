@@ -36,18 +36,24 @@ export const Header = () => {
         router.push("/login");
     };
 
-    const navItems = [
+    const guestNavItems = [
+        { label: "Blog", href: "/blog" },
+        { label: "Ecossistema", href: "/ecosystem" },
+        { label: "Bunker", href: "/library" },
+    ];
+
+    const loggedInNavItems = [
         { label: "Sede", href: "/sede" },
         { label: "Empresas", href: "/sede/companies" },
         { label: "Bunker", href: "/library" },
-        { label: "Ecossistema", href: "/ecosystem" },
-        { label: "Blog", href: "/blog" },
     ];
+
+    const currentNavItems = user ? loggedInNavItems : guestNavItems;
 
     return (
         <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#101010]/80 backdrop-blur-xl px-8 py-4 flex justify-between items-center">
             <Link
-                href="/"
+                href={user ? "/sede" : "/"}
                 className="flex items-center gap-2 group cursor-pointer"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -71,7 +77,7 @@ export const Header = () => {
             </Link>
 
             <div className="hidden md:flex gap-1 items-center">
-                {user?.user_metadata?.role !== 'CLIENT_ADMIN' && navItems.map((item) => {
+                {currentNavItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
                     return (
                         <Link
@@ -80,7 +86,6 @@ export const Header = () => {
                             className="relative px-4 py-2 group"
                         >
                             <span className={`relative z-10 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 flex items-center gap-1.5 ${isActive ? 'text-[#E1FD3F]' : 'text-white/40 group-hover:text-white'}`}>
-                                <span className="opacity-20 font-mono">/</span>
                                 {item.label}
                             </span>
 
@@ -123,12 +128,20 @@ export const Header = () => {
                     </button>
                 </div>
             ) : (
-                <Link
-                    href="/login"
-                    className="text-[10px] font-black uppercase tracking-widest bg-[#E1FD3F] text-[#050505] px-6 py-2.5 rounded-xl shadow-[0_0_20px_rgba(225,253,63,0.2)] hover:scale-105 active:scale-95 transition-all"
-                >
-                    Acessar Bunker
-                </Link>
+                <div className="flex items-center gap-4">
+                    <Link
+                        href="/login"
+                        className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors"
+                    >
+                        Entrar
+                    </Link>
+                    <Link
+                        href="/login"
+                        className="text-[10px] font-black uppercase tracking-widest bg-[#E1FD3F] text-[#050505] px-6 py-2.5 rounded-xl shadow-[0_0_20px_rgba(225,253,63,0.2)] hover:scale-105 active:scale-95 transition-all"
+                    >
+                        Acessar Bunker
+                    </Link>
+                </div>
             )}
         </nav>
     );
