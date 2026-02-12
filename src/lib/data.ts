@@ -91,8 +91,8 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: "1",
-        title: "Contratos",
-        description: "Modelos jurídicos prontos para uso comercial e pessoal.",
+        title: "Documentos",
+        description: "Contratos, checklists e assets essenciais para seu negócio.",
         icon: "file-text",
         color: "text-[#E1FD3F] bg-[#E1FD3F]/10",
         thumbnail: "/contratos-preview.png",

@@ -42,7 +42,7 @@ export const Header = () => {
 
     const loggedInNavItems = [
         { label: "Sede", href: "/sede" },
-        { label: "Empresas", href: "/sede/companies" },
+        { label: "Ecossistema", href: "/sede/companies" },
         { label: "Blog", href: "/blog" },
     ];
 

@@ -268,17 +268,11 @@ export default function DashboardPage() {
                                 <span className="text-[8px] font-bold tracking-widest text-green-500/80 uppercase">Online</span>
                             </div>
                         </div>
-                        <Link
-                            href="/library"
-                            className="group flex items-center gap-2 text-sm text-[#E1FD3F] hover:underline font-bold"
-                        >
-                            Ver todos
-                            <Zap className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {["adao", "management", "1", "automations"].map((id, index) => {
+                        {/* Core Products */}
+                        {["adao", "1", "2"].map((id, index) => {
                             const product = PRODUCTS.find(p => p.id === id);
                             if (!product) return null;
                             return (
@@ -291,6 +285,47 @@ export default function DashboardPage() {
                                 />
                             );
                         })}
+
+                        {/* Future Updates Teaser Block */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.32 }}
+                            className="relative group h-full"
+                        >
+                            <div className="relative h-full flex flex-col justify-between p-8 rounded-[28px] bg-[#0f0f0f]/40 backdrop-blur-md border border-white/5 overflow-hidden transition-all duration-500 hover:border-[#E1FD3F]/10">
+                                {/* Mystery Icon / Teaser visual */}
+                                <div className="mb-6 relative">
+                                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center relative overflow-hidden group-hover:bg-[#E1FD3F]/10 transition-colors">
+                                        <span className="text-2xl font-black text-white/20 group-hover:text-[#E1FD3F] transition-colors leading-none italic">?</span>
+                                        {/* Dynamic scanning line */}
+                                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#E1FD3F]/20 to-transparent h-1/2 w-full -translate-y-full group-hover:animate-[scan_2s_linear_infinite]" />
+                                    </div>
+                                    <div className="absolute -inset-2 bg-[#E1FD3F]/5 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+
+                                <div className="space-y-2 mt-auto">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[#E1FD3F] animate-pulse" />
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#E1FD3F]">Em Breve</span>
+                                    </div>
+                                    <h3 className="text-lg font-bold tracking-tight text-white/40 group-hover:text-white transition-colors">
+                                        Novidades
+                                    </h3>
+                                    <p className="text-xs text-white/20 leading-relaxed font-medium group-hover:text-white/40 transition-colors">
+                                        Estamos preparando novas ferramentas de elite para o seu arsenal.
+                                    </p>
+                                </div>
+
+                                {/* Elite Pro Badge for consistency */}
+                                <div className="absolute top-6 right-6">
+                                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/20 italic">
+                                        <Crown className="w-3 h-3" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Elite Pro</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
                 </motion.div>
             </div>
