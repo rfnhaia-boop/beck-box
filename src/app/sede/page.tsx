@@ -277,15 +277,19 @@ export default function DashboardPage() {
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {PRODUCTS.filter(p => p.id !== "all").slice(0, 4).map((product, index) => (
-                            <ProductCard
-                                key={product.id}
-                                product={product}
-                                index={index}
-                                isEliteUser={user?.user_metadata?.plan === 'elite'}
-                            />
-                        ))}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                        {["adao", "management", "1", "automations", "2"].map((id, index) => {
+                            const product = PRODUCTS.find(p => p.id === id);
+                            if (!product) return null;
+                            return (
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                    index={index}
+                                    isEliteUser={user?.user_metadata?.plan === 'elite'}
+                                />
+                            );
+                        })}
                     </div>
                 </motion.div>
             </div>
