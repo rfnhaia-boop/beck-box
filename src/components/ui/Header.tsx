@@ -38,14 +38,12 @@ export const Header = () => {
 
     const guestNavItems = [
         { label: "Blog", href: "/blog" },
-        { label: "Ecossistema", href: "/ecosystem" },
-        { label: "Bunker", href: "/library" },
     ];
 
     const loggedInNavItems = [
         { label: "Sede", href: "/sede" },
         { label: "Empresas", href: "/sede/companies" },
-        { label: "Bunker", href: "/library" },
+        { label: "Blog", href: "/blog" },
     ];
 
     const currentNavItems = user ? loggedInNavItems : guestNavItems;
