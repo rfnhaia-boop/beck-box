@@ -8,13 +8,27 @@ interface FunnelProps {
     contracts: any[];
 }
 
+interface FunnelItem {
+    label: string;
+    status?: "DONE" | "PENDING";
+    value?: string;
+}
+
+interface FunnelStage {
+    id: number;
+    title: string;
+    icon: any;
+    color: string;
+    items: FunnelItem[];
+}
+
 export const ProjectFunnel = ({ milestones, contracts }: FunnelProps) => {
     // Derived stats
     const completedMilestones = milestones.filter(m => m.completed_at).length;
     const totalMilestones = milestones.length;
     const progressPercent = totalMilestones > 0 ? Math.round((completedMilestones / totalMilestones) * 100) : 0;
 
-    const stages = [
+    const stages: FunnelStage[] = [
         {
             id: 1,
             title: "Início do Projeto",
