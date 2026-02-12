@@ -1,3 +1,18 @@
+export interface Lesson {
+    id: string;
+    title: string;
+    duration?: string;
+    videoUrl?: string;
+    summary?: string;
+    objectives?: string[];
+}
+
+export interface Module {
+    id: string;
+    title: string;
+    lessons: Lesson[];
+}
+
 export interface Product {
     id: string;
     title: string;
@@ -7,6 +22,7 @@ export interface Product {
     thumbnail?: string;
     link?: string;
     eliteOnly?: boolean;
+    modules?: Module[];
 }
 
 export const PRODUCTS: Product[] = [
@@ -71,7 +87,43 @@ export const PRODUCTS: Product[] = [
         description: "Slides profissionais e templates editáveis.",
         icon: "presentation",
         color: "text-[#E1FD3F] bg-[#E1FD3F]/10",
-        thumbnail: "/apresentacao-30k-preview.png"
+        thumbnail: "/apresentacao-30k-preview.png",
+        modules: [
+            {
+                id: "m1",
+                title: "Módulo 01 - Introdução",
+                lessons: [
+                    {
+                        id: "l1",
+                        title: "Introdução",
+                        duration: "5:30",
+                        summary: "Introdução ao curso de marketing com IA da Adapta; Três objetivos principais do curso; Definição simplificada de marketing; Importância de adaptar os princípios aprendidos para diferentes contextos.",
+                        objectives: [
+                            "O primeiro objetivo é incentivar o uso diário de IAs no marketing e em outras áreas da vida",
+                            "O segundo objetivo é criar um \"Efeito Bola de Neve\" no uso do Adapta One",
+                            "O terceiro objetivo é ajudar a obter resultados interessantes"
+                        ]
+                    },
+                    { id: "l2", title: "As 6 \"leis\" para usar bem as IAs", duration: "12:15" },
+                    { id: "l3", title: "A estrutura do marketing efetivo com IA", duration: "08:45" }
+                ]
+            },
+            {
+                id: "m2",
+                title: "Módulo 02 - Ter ideias",
+                lessons: [
+                    { id: "l4", title: "Brainstorming com Adão", duration: "10:20" },
+                    { id: "l5", title: "Validação de nichos", duration: "15:10" }
+                ]
+            },
+            {
+                id: "m3",
+                title: "Módulo 03 - Criar",
+                lessons: [
+                    { id: "l6", title: "Copywriting de Elite", duration: "20:00" }
+                ]
+            }
+        ]
     },
     {
         id: "3",
