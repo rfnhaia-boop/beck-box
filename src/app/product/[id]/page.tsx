@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { CoursePlayer } from "@/components/ui/CoursePlayer";
+import { ContractHub } from "@/components/ui/ContractHub";
 
 export default function ProductPage() {
     const params = useParams<{ id: string }>();
@@ -67,6 +68,8 @@ export default function ProductPage() {
                         {hasAccess ? (
                             product.id === "2" ? (
                                 <CoursePlayer product={product} />
+                            ) : product.id === "1" ? (
+                                <ContractHub product={product} />
                             ) : (
                                 <div className="grid md:grid-cols-2 gap-12">
                                     {/* Left Column: Image & Details */}

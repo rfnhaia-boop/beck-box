@@ -13,6 +13,21 @@ export interface Module {
     lessons: Lesson[];
 }
 
+export interface ContractTemplate {
+    id: string;
+    title: string;
+    description: string;
+    fileSize: string;
+    fileType: 'pdf' | 'docx' | 'zip';
+    tags?: string[];
+}
+
+export interface ContractCategory {
+    id: string;
+    title: string;
+    contracts: ContractTemplate[];
+}
+
 export interface Product {
     id: string;
     title: string;
@@ -23,6 +38,7 @@ export interface Product {
     link?: string;
     eliteOnly?: boolean;
     modules?: Module[];
+    categories?: ContractCategory[];
 }
 
 export const PRODUCTS: Product[] = [
@@ -79,7 +95,26 @@ export const PRODUCTS: Product[] = [
         description: "Modelos jurídicos prontos para uso comercial e pessoal.",
         icon: "file-text",
         color: "text-[#E1FD3F] bg-[#E1FD3F]/10",
-        thumbnail: "/contratos-preview.png"
+        thumbnail: "/contratos-preview.png",
+        categories: [
+            {
+                id: "c1",
+                title: "Prestação de Serviços",
+                contracts: [
+                    { id: "ct1", title: "Contrato de Social Media", description: "Modelo completo com cláusulas de aprovação e direitos autorais.", fileSize: "1.2MB", fileType: "docx", tags: ["Marketing", "Serviços"] },
+                    { id: "ct2", title: "Gestão de Tráfego Pago", description: "Focado em performance e responsabilidades sobre investimento.", fileSize: "850KB", fileType: "docx", tags: ["Ads", "Performance"] },
+                    { id: "ct3", title: "Desenvolvimento Web", description: "Cláusulas de escopo, prazos e manutenção.", fileSize: "1.5MB", fileType: "docx", tags: ["Dev", "Tech"] }
+                ]
+            },
+            {
+                id: "c2",
+                title: "Parcerias e Legal",
+                contracts: [
+                    { id: "ct4", title: "NDA - Confidencialidade", description: "Proteja seus segredos comerciais e ideias.", fileSize: "400KB", fileType: "docx", tags: ["Segurança", "Legal"] },
+                    { id: "ct5", title: "Acordo de Sócios (MOU)", description: "Memorando de entendimento para novos negócios.", fileSize: "2.1MB", fileType: "docx", tags: ["Equity", "Startup"] }
+                ]
+            }
+        ]
     },
     {
         id: "2",
