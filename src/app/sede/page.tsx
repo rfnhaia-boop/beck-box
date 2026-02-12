@@ -6,7 +6,7 @@ import { PRODUCTS } from "@/lib/data";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { motion } from "framer-motion";
-import { User, LogOut, Crown, Sparkles, Shield, Zap, Download, Loader2, Settings } from "lucide-react";
+import { User, LogOut, Crown, Sparkles, Shield, Zap, Download, Loader2, Settings, Building2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -278,7 +278,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {PRODUCTS.filter(p => p.id !== "all").slice(0, 3).map((product, index) => (
+                        {PRODUCTS.filter(p => p.id !== "all").slice(0, 4).map((product, index) => (
                             <ProductCard
                                 key={product.id}
                                 product={product}
@@ -286,25 +286,6 @@ export default function DashboardPage() {
                                 isEliteUser={user?.user_metadata?.plan === 'elite'}
                             />
                         ))}
-                        {/* Ver Todos Card */}
-                        <Link href="/library">
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.15 }}
-                                whileHover={{ scale: 1.02, y: -4 }}
-                                className="group relative h-full min-h-[220px] rounded-[28px] bg-gradient-to-br from-[#E1FD3F]/10 to-[#A855F7]/10 border border-white/10 hover:border-[#A855F7]/40 transition-all duration-300 flex flex-col items-center justify-center gap-3 cursor-pointer overflow-hidden"
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#E1FD3F]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <div className="w-12 h-12 rounded-xl bg-[#E1FD3F]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <Zap className="w-6 h-6 text-[#E1FD3F]" />
-                                </div>
-                                <div className="text-center relative z-10">
-                                    <p className="text-lg font-black text-white mb-0.5">Ver Todos</p>
-                                    <p className="text-xs text-white/40">Bunker completo</p>
-                                </div>
-                            </motion.div>
-                        </Link>
                     </div>
                 </motion.div>
             </div>

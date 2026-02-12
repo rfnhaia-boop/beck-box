@@ -54,8 +54,9 @@ export const Header = () => {
 
             <div className="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-white/50">
                 <Link href="/sede" className="hover:text-[#E1FD3F] transition-colors">Sede</Link>
+                <Link href="/sede/companies" className="hover:text-[#E1FD3F] transition-colors">Empresas</Link>
                 <Link href="/library" className="hover:text-[#E1FD3F] transition-colors">Bunker</Link>
-                <Link href="/ecosystem" className="hover:text-[#E1FD3F] transition-colors">Empresa</Link>
+                <Link href="/ecosystem" className="hover:text-[#E1FD3F] transition-colors">Ecosistema</Link>
                 <Link href="/blog" className="hover:text-[#E1FD3F] transition-colors">Blog</Link>
             </div>
 

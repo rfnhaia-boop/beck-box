@@ -18,7 +18,7 @@ export const PRODUCTS: Product[] = [
         color: "text-[#E1FD3F] bg-[#E1FD3F]/10",
         thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop",
         link: "/adao",
-        eliteOnly: true
+        eliteOnly: false
     },
     {
         id: "antigravity",
@@ -37,6 +37,16 @@ export const PRODUCTS: Product[] = [
         color: "text-[#A855F7] bg-[#A855F7]/10",
         thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
         eliteOnly: true
+    },
+    {
+        id: "companies",
+        title: "Empresas",
+        description: "Gestão de empresas contratadas e multi-tenancy.",
+        icon: "zap",
+        color: "text-[#A855F7] bg-[#A855F7]/10",
+        thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop",
+        link: "/sede/companies",
+        eliteOnly: false
     },
     {
         id: "automations",

@@ -26,11 +26,16 @@ export default function LoginPage() {
         const checkUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
-                router.push("/sede");
+                // Use user_metadata.role to determine redirect (no DB query needed)
+                if (user.user_metadata?.role === 'CLIENT_ADMIN') {
+                    router.push("/client/dashboard");
+                } else {
+                    router.push("/sede");
+                }
             }
         };
         checkUser();
-    }, [router, supabase.auth]);
+    }, [router, supabase]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -56,8 +61,16 @@ export default function LoginPage() {
                 return;
             }
 
-            router.push("/sede");
-            router.refresh();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                // Use user_metadata.role to determine redirect (no DB query needed)
+                if (user.user_metadata?.role === 'CLIENT_ADMIN') {
+                    router.push("/client/dashboard");
+                } else {
+                    router.push("/sede");
+                }
+                router.refresh();
+            }
         } catch {
             setError("Erro ao fazer login. Tente novamente.");
             setIsLoading(false);
