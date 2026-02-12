@@ -3,7 +3,7 @@
 import { FuturisticBackground } from "@/components/ui/Background";
 import { Header } from "@/components/ui/Header";
 import { PRODUCTS } from "@/lib/data";
-import { ArrowLeft, Download, FileText, Lock, Shield, Star, Video, Zap } from "lucide-react";
+import { ArrowLeft, Download, FileText, Lock, Shield, Star, Video, Zap, ExternalLink, Presentation } from "lucide-react";
 import Link from "next/link";
 import { notFound, useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
@@ -57,10 +57,10 @@ export default function ProductPage() {
             <div className={`pt-32 pb-20 px-6 mx-auto relative z-10 ${product.id === "2" ? "max-w-7xl" : "max-w-5xl"}`}>
                 {/* Back Link */}
                 <Link
-                    href="/library"
+                    href="/sede"
                     className="inline-flex items-center gap-2 text-white/40 hover:text-[#E1FD3F] mb-8 transition-colors"
                 >
-                    <ArrowLeft className="w-4 h-4" /> Voltar para o Bunker
+                    <ArrowLeft className="w-4 h-4" /> Voltar para a Sede
                 </Link>
 
                 {!loading && (
@@ -68,6 +68,26 @@ export default function ProductPage() {
                         {hasAccess ? (
                             product.id === "2" ? (
                                 <CoursePlayer product={product} />
+                            ) : product.link && product.link.startsWith("http") ? (
+                                <div className="flex flex-col items-center justify-center py-20 px-6 rounded-[32px] bg-white/[0.02] border border-white/10 backdrop-blur-sm shadow-2xl relative overflow-hidden group">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-[#E1FD3F]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                                    <div className="w-24 h-24 rounded-[32px] bg-[#E1FD3F]/10 flex items-center justify-center mb-8 relative">
+                                        <div className="absolute inset-0 bg-[#E1FD3F]/20 blur-3xl rounded-full opacity-50" />
+                                        {product.id === "2" ? <Presentation className="w-12 h-12 text-[#E1FD3F] relative z-10" /> : <Zap className="w-12 h-12 text-[#E1FD3F] relative z-10" />}
+                                    </div>
+                                    <h2 className="text-3xl font-black text-white mb-4 text-center">{product.title}</h2>
+                                    <p className="text-white/40 text-center max-w-md mb-12 font-medium">
+                                        Este recurso é externo e pode ser editado diretamente. Clique no botão abaixo para abrir no navegador.
+                                    </p>
+                                    <a
+                                        href={product.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-3 px-12 py-5 rounded-2xl bg-[#E1FD3F] text-[#050505] font-black uppercase tracking-[0.2em] text-sm hover:scale-105 active:scale-95 transition-all shadow-[0_0_50px_rgba(225,253,63,0.3)]"
+                                    >
+                                        Acessar Link <ExternalLink className="w-5 h-5" />
+                                    </a>
+                                </div>
                             ) : product.id === "1" ? (
                                 <ContractHub product={product} />
                             ) : (

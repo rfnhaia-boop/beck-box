@@ -42,7 +42,7 @@ export const Header = () => {
 
     const loggedInNavItems = [
         { label: "Sede", href: "/sede" },
-        { label: "Ecossistema", href: "/sede/companies" },
+        { label: "Ecossistema", href: "/sede/ecosystem" },
         { label: "Blog", href: "/blog" },
     ];
 
@@ -137,7 +137,7 @@ export const Header = () => {
                         href="/login"
                         className="text-[10px] font-black uppercase tracking-widest bg-[#E1FD3F] text-[#050505] px-6 py-2.5 rounded-xl shadow-[0_0_20px_rgba(225,253,63,0.2)] hover:scale-105 active:scale-95 transition-all"
                     >
-                        Acessar Bunker
+                        Acessar Sede
                     </Link>
                 </div>
             )}

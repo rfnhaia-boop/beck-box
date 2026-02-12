@@ -41,8 +41,8 @@ export function ContractHub({ product }: ContractHubProps) {
                     <button
                         onClick={() => setSelectedCategory("all")}
                         className={`px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-all ${selectedCategory === "all"
-                                ? 'bg-[#E1FD3F] text-black shadow-[0_0_20px_rgba(225,253,63,0.2)]'
-                                : 'bg-white/5 text-white/40 border border-white/5 hover:bg-white/10'
+                            ? 'bg-[#E1FD3F] text-black shadow-[0_0_20px_rgba(225,253,63,0.2)]'
+                            : 'bg-white/5 text-white/40 border border-white/5 hover:bg-white/10'
                             }`}
                     >
                         Todos
@@ -52,8 +52,8 @@ export function ContractHub({ product }: ContractHubProps) {
                             key={cat.id}
                             onClick={() => setSelectedCategory(cat.id)}
                             className={`px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-all ${selectedCategory === cat.id
-                                    ? 'bg-[#E1FD3F] text-black shadow-[0_0_20px_rgba(225,253,63,0.2)]'
-                                    : 'bg-white/5 text-white/40 border border-white/5 hover:bg-white/10'
+                                ? 'bg-[#E1FD3F] text-black shadow-[0_0_20px_rgba(225,253,63,0.2)]'
+                                : 'bg-white/5 text-white/40 border border-white/5 hover:bg-white/10'
                                 }`}
                         >
                             {cat.title}
@@ -63,7 +63,7 @@ export function ContractHub({ product }: ContractHubProps) {
             </div>
 
             {/* Contract List */}
-            <div className="grid gap-16">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-16">
                 {filteredCategories?.map((category, catIdx) => (
                     <div key={category.id} className="space-y-8">
                         <div className="flex items-center gap-4">
@@ -74,7 +74,7 @@ export function ContractHub({ product }: ContractHubProps) {
                             <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
                         </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 gap-6">
                             {category.contracts.map((contract, i) => (
                                 <motion.div
                                     key={contract.id}
@@ -121,9 +121,20 @@ export function ContractHub({ product }: ContractHubProps) {
                                                 </div>
                                             </div>
 
-                                            <button className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-[#E1FD3F] group-hover:text-black transition-all">
-                                                <Download className="w-4 h-4" />
-                                            </button>
+                                            {contract.externalUrl ? (
+                                                <a
+                                                    href={contract.externalUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="px-4 py-2 rounded-xl bg-white/5 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40 group-hover:bg-[#E1FD3F] group-hover:text-black transition-all"
+                                                >
+                                                    Acessar Link <ExternalLink className="w-3.5 h-3.5" />
+                                                </a>
+                                            ) : (
+                                                <button className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-[#E1FD3F] group-hover:text-black transition-all">
+                                                    <Download className="w-4 h-4" />
+                                                </button>
+                                            )}
                                         </div>
 
                                         {/* Hover decoration */}

@@ -20,6 +20,7 @@ export interface ContractTemplate {
     fileSize: string;
     fileType: 'pdf' | 'docx' | 'zip';
     tags?: string[];
+    externalUrl?: string;
 }
 
 export interface ContractCategory {
@@ -71,16 +72,6 @@ export const PRODUCTS: Product[] = [
         eliteOnly: true
     },
     {
-        id: "companies",
-        title: "Empresas",
-        description: "Gestão de empresas contratadas e multi-tenancy.",
-        icon: "zap",
-        color: "text-[#A855F7] bg-[#A855F7]/10",
-        thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop",
-        link: "/sede/companies",
-        eliteOnly: false
-    },
-    {
         id: "automations",
         title: "Orçamento Digital",
         description: "Crie, gerencie e envie propostas comerciais profissionais.",
@@ -99,19 +90,32 @@ export const PRODUCTS: Product[] = [
         categories: [
             {
                 id: "c1",
-                title: "Prestação de Serviços",
+                title: "Contrato",
                 contracts: [
-                    { id: "ct1", title: "Contrato de Social Media", description: "Modelo completo com cláusulas de aprovação e direitos autorais.", fileSize: "1.2MB", fileType: "docx", tags: ["Marketing", "Serviços"] },
-                    { id: "ct2", title: "Gestão de Tráfego Pago", description: "Focado em performance e responsabilidades sobre investimento.", fileSize: "850KB", fileType: "docx", tags: ["Ads", "Performance"] },
-                    { id: "ct3", title: "Desenvolvimento Web", description: "Cláusulas de escopo, prazos e manutenção.", fileSize: "1.5MB", fileType: "docx", tags: ["Dev", "Tech"] }
+                    {
+                        id: "ct1",
+                        title: "Modelo de Contrato 30K",
+                        description: "Link direto para o modelo de contrato oficial para projetos de elite.",
+                        fileSize: "Figma Link",
+                        fileType: "pdf",
+                        tags: ["Vendas", "Legal"],
+                        externalUrl: "https://www.figma.com/design/Arrz1GzTcAFOG8JgrVQTHU/BlackBox?node-id=0-1&p=f"
+                    }
                 ]
             },
             {
                 id: "c2",
-                title: "Parcerias e Legal",
+                title: "Apresentação",
                 contracts: [
-                    { id: "ct4", title: "NDA - Confidencialidade", description: "Proteja seus segredos comerciais e ideias.", fileSize: "400KB", fileType: "docx", tags: ["Segurança", "Legal"] },
-                    { id: "ct5", title: "Acordo de Sócios (MOU)", description: "Memorando de entendimento para novos negócios.", fileSize: "2.1MB", fileType: "docx", tags: ["Equity", "Startup"] }
+                    {
+                        id: "ct2",
+                        title: "Deck de Apresentação 30K",
+                        description: "Link direto para os slides profissionais da apresentação de 30K.",
+                        fileSize: "Figma Link",
+                        fileType: "pdf",
+                        tags: ["Vendas", "Comercial"],
+                        externalUrl: "https://www.figma.com/design/Arrz1GzTcAFOG8JgrVQTHU/BlackBox?node-id=5-2&p=f"
+                    }
                 ]
             }
         ]
