@@ -160,7 +160,20 @@ export default function ClientDashboardPage() {
                                 </div>
                             </div>
                         </div>
-                        {/* Right side actions could go here */}
+
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={async () => {
+                                    await supabase.auth.signOut();
+                                    router.push("/login");
+                                    router.refresh();
+                                }}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/40 hover:text-red-400 hover:border-red-400/20 hover:bg-red-400/5 transition-all text-[10px] font-black uppercase tracking-widest"
+                            >
+                                <PlayCircle className="w-3.5 h-3.5 rotate-180" />
+                                Sair do Bunker
+                            </button>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -311,10 +324,10 @@ export default function ClientDashboardPage() {
                                             {/* Timestamp / Visual Node */}
                                             <div className="relative z-10 flex-shrink-0 mt-1">
                                                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 ${m.status === 'complete'
-                                                        ? 'bg-[#0A0A0A] border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)]'
-                                                        : m.status === 'in_progress'
-                                                            ? 'bg-[#0A0A0A] border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.2)]'
-                                                            : 'bg-[#0A0A0A] border-white/10 group-hover:border-white/20'
+                                                    ? 'bg-[#0A0A0A] border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)]'
+                                                    : m.status === 'in_progress'
+                                                        ? 'bg-[#0A0A0A] border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.2)]'
+                                                        : 'bg-[#0A0A0A] border-white/10 group-hover:border-white/20'
                                                     }`}>
                                                     {m.status === 'complete' ? (
                                                         <CheckCircle2 className="w-6 h-6 text-green-400" />
@@ -331,8 +344,8 @@ export default function ClientDashboardPage() {
                                                 <div className="flex items-start justify-between gap-4">
                                                     <div>
                                                         <h4 className={`text-base font-bold transition-colors ${m.status === 'complete' ? 'text-white/40 line-through'
-                                                                : m.status === 'in_progress' ? 'text-blue-200'
-                                                                    : 'text-white group-hover:text-[#E1FD3F]'
+                                                            : m.status === 'in_progress' ? 'text-blue-200'
+                                                                : 'text-white group-hover:text-[#E1FD3F]'
                                                             }`}>
                                                             {m.title}
                                                         </h4>

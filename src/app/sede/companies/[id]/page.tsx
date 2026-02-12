@@ -34,7 +34,8 @@ import {
     History,
     LayoutDashboard,
     Search,
-    Filter
+    Filter,
+    Building2
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -69,17 +70,24 @@ function Confetti({ active }: { active: boolean }) {
 
 // ─── Status Badge ───
 function StatusBadge({ status }: { status: string }) {
-    const config: Record<string, { bg: string; text: string; label: string; glow?: string }> = {
-        pending: { bg: 'bg-white/5 border-white/10', text: 'text-white/30', label: 'Pendente' },
-        in_progress: { bg: 'bg-blue-500/10 border-blue-500/30', text: 'text-blue-400', label: 'Fazendo', glow: 'shadow-[0_0_12px_rgba(59,130,246,0.4)]' },
-        complete: { bg: 'bg-green-500/10 border-green-500/30', text: 'text-green-400', label: 'Concluído' },
+    const styles: Record<string, string> = {
+        pending: 'bg-white/5 border-white/10 text-white/40',
+        in_progress: 'bg-blue-500/10 border-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]',
+        complete: 'bg-green-500/10 border-green-500/20 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.15)]',
     };
-    const c = config[status] || config.pending;
+    const labels: Record<string, string> = { pending: 'Pendente', in_progress: 'Em andamento', complete: 'Concluído' };
+
     return (
-        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${c.bg} ${c.text} ${c.glow || ''} transition-all`}>
-            {status === 'in_progress' && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />}
-            {c.label}
-        </span>
+        <div className={`relative inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-all duration-300 ${styles[status] || styles.pending}`}>
+            {status === 'in_progress' && (
+                <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+            )}
+            {status === 'complete' && <CheckCircle2 className="w-3 h-3" />}
+            {labels[status] || 'Pendente'}
+        </div>
     );
 }
 
@@ -95,46 +103,52 @@ function PhaseCard({ icon: Icon, title, subtitle, status, onClick, index, url }:
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             onClick={onClick}
-            className={`relative cursor-pointer group p-6 rounded-[28px] border-2 transition-all duration-500 ${isComplete
-                ? 'bg-green-500/5 border-green-500/30 hover:border-green-500/50'
-                : 'bg-white/[0.02] border-white/10 hover:border-[#E1FD3F]/30 hover:bg-white/[0.04]'
+            className={`relative cursor-pointer group p-6 rounded-[24px] border transition-all duration-500 overflow-hidden ${isComplete
+                ? 'bg-green-500/5 border-green-500/20 hover:border-green-500/40'
+                : 'bg-white/[0.03] border-white/5 hover:border-white/10 hover:bg-white/[0.05]'
                 }`}
         >
+            {/* Glow Effect */}
+            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r ${isComplete ? 'from-green-500/10 to-transparent' : 'from-white/5 to-transparent'}`} />
+
             {/* Step Number */}
-            <div className="absolute -top-3 -left-1">
-                <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full ${isComplete ? 'bg-green-500 text-black' : 'bg-white/10 text-white/40'
+            <div className="absolute top-4 right-4 translate-x-2 -translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500">
+                <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg ${isComplete ? 'bg-green-500/20 text-green-400' : 'bg-white/10 text-white/40'
                     }`}>
-                    {isComplete ? '✓' : `0${index + 1}`}
+                    {isComplete ? 'Concluído' : `0${index + 1}`}
                 </span>
             </div>
 
-            <div className="flex items-start gap-4">
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-500 ${isComplete
+            <div className="flex items-start gap-4 relative z-10">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-500 ${isComplete
                     ? 'bg-green-500/20'
-                    : 'bg-white/5 group-hover:bg-[#E1FD3F]/10'
+                    : 'bg-white/5 group-hover:bg-white/10'
                     }`}>
                     {isComplete ? (
                         <motion.div
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
                             transition={{ type: "spring", stiffness: 200, damping: 10 }}
                         >
-                            <CheckCircle2 className="w-7 h-7 text-green-400" />
+                            <CheckCircle2 className="w-6 h-6 text-green-400" />
                         </motion.div>
                     ) : (
-                        <Icon className="w-7 h-7 text-white/30 group-hover:text-[#E1FD3F] transition-colors" />
+                        <Icon className="w-6 h-6 text-white/30 group-hover:text-white transition-colors" />
                     )}
                 </div>
                 <div className="flex-1 min-w-0">
-                    <h3 className={`text-base font-bold mb-1 ${isComplete ? 'text-green-400' : 'text-white'}`}>
+                    <h3 className={`text-sm font-bold mb-1 transition-colors ${isComplete ? 'text-green-400' : 'text-white group-hover:text-[#E1FD3F]'}`}>
                         {title}
                     </h3>
-                    <p className="text-xs text-white/30 leading-relaxed">{subtitle}</p>
+                    <p className="text-xs text-white/40 leading-relaxed group-hover:text-white/60 transition-colors">{subtitle}</p>
                     {url && (
-                        <a href={url} target="_blank" rel="noopener" onClick={e => e.stopPropagation()}
-                            className="inline-flex items-center gap-1 mt-2 text-[10px] text-[#E1FD3F]/60 hover:text-[#E1FD3F] font-mono">
-                            <LinkIcon className="w-3 h-3" /> Abrir link
-                        </a>
+                        <div className="mt-3 flex items-center gap-2">
+                            <a href={url} target="_blank" rel="noopener" onClick={e => e.stopPropagation()}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-[10px] text-[#E1FD3F] font-mono group/link">
+                                <LinkIcon className="w-3 h-3" />
+                                <span className="group-hover/link:underline">Abrir Documento</span>
+                            </a>
+                        </div>
                     )}
                 </div>
             </div>
@@ -263,78 +277,86 @@ export default function CompanyDetailPage() {
     ];
 
     return (
-        <main className="min-h-screen relative text-[#EFEFEF] overflow-x-hidden bg-[#050505]">
+        <main className="min-h-screen bg-[#050505] text-[#EFEFEF] selection:bg-[#E1FD3F]/30 overflow-x-hidden">
             <FuturisticBackground />
             <Header />
             <Confetti active={showConfetti} />
 
-            <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto relative z-10">
-                {/* Back */}
-                <Link href="/sede/companies" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-xs font-bold uppercase tracking-widest mb-8 transition-colors">
-                    <ArrowLeft className="w-4 h-4" /> Empresas
-                </Link>
+            <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 space-y-8">
+                {/* Back Navigation */}
+                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
+                    <Link href="/sede/companies" className="group inline-flex items-center gap-2 text-white/40 hover:text-[#E1FD3F] text-xs font-bold uppercase tracking-[0.2em] transition-all">
+                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                        Voltar para Empresas
+                    </Link>
+                </motion.div>
 
-                {/* Header Row */}
-                <div className="flex flex-col lg:flex-row gap-8 mb-12">
-                    {/* Company Card */}
-                    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                        className="flex-1 bg-white/5 border border-white/10 rounded-[32px] p-8">
-                        <div className="flex items-start justify-between mb-8">
-                            <div className="flex items-center gap-5">
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#E1FD3F] to-[#A855F7] p-0.5">
-                                    <div className="w-full h-full rounded-[14px] bg-[#050505] flex items-center justify-center">
-                                        <span className="text-2xl font-black italic text-[#E1FD3F]">
-                                            {t.name?.charAt(0)?.toUpperCase()}
-                                        </span>
+                <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8">
+                    {/* ═══ Left Column: Profile & Stats ═══ */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="lg:col-span-8 space-y-6"
+                    >
+                        {/* Company Detail Card */}
+                        <div className="relative overflow-hidden bg-[#0A0A0A] border border-white/5 rounded-[32px] p-8 group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+
+                            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                <div className="flex items-center gap-6">
+                                    <div className="relative group/logo">
+                                        <div className="absolute -inset-1 bg-gradient-to-br from-[#E1FD3F] to-[#A855F7] rounded-3xl opacity-50 blur group-hover/logo:opacity-100 transition duration-500" />
+                                        <div className="relative w-20 h-20 rounded-2xl bg-[#0F0F0F] flex items-center justify-center border border-white/10 overflow-hidden shadow-2xl">
+                                            {t.logo_url ? (
+                                                <img src={t.logo_url} alt={t.name} className="w-14 h-14 object-contain" />
+                                            ) : (
+                                                <span className="text-3xl font-black italic bg-gradient-to-br from-[#E1FD3F] to-white bg-clip-text text-transparent">
+                                                    {t.name?.charAt(0)?.toUpperCase()}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <h1 className="text-3xl font-black tracking-tight">{t.name}</h1>
-                                    {t.cnpj && <p className="text-white/30 text-xs mt-1">CNPJ: {t.cnpj}</p>}
+                                    <div>
+                                        <div className="flex items-center gap-3 mb-1">
+                                            <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-white">{t.name}</h1>
+                                            <StatusBadge status={t.status?.toLowerCase() === 'active' ? 'complete' : 'pending'} />
+                                        </div>
+                                        <div className="flex items-center gap-2 text-white/30 text-xs font-mono">
+                                            <Building2 className="w-3.5 h-3.5" />
+                                            <span>CNPJ: {t.cnpj || "Não informado"}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${t.status === 'ACTIVE' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
-                                {t.status}
-                            </span>
-                        </div>
 
-                        {/* Stats */}
-                        <div className="grid grid-cols-4 gap-3">
-                            {[
-                                { value: data.users.length, label: "Usuários", color: "text-[#E1FD3F]" },
-                                { value: data.contracts.length, label: "Contratos", color: "text-[#A855F7]" },
-                                { value: `${phasesComplete}/3`, label: "Docs", color: allPhasesComplete ? "text-green-400" : "text-white/60" },
-                                { value: `${progressPercent}%`, label: "Progresso", color: "text-white" },
-                            ].map((s, i) => (
-                                <div key={i} className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 text-center">
-                                    <p className={`text-xl font-black ${s.color}`}>{s.value}</p>
-                                    <p className="text-[9px] text-white/25 uppercase tracking-widest font-bold mt-0.5">{s.label}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Active milestone indicator */}
-                        {activeMilestone && (
-                            <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                className="mt-6 p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse" />
-                                    <div>
-                                        <p className="text-[10px] text-blue-400/60 uppercase tracking-widest font-bold">Trabalhando em</p>
-                                        <p className="text-sm font-bold text-blue-300">{activeMilestone.title}</p>
+                            {/* Stats Grid */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+                                {[
+                                    { icon: Users, value: data.users.length, label: "Usuários", color: "text-[#E1FD3F]", bg: "bg-[#E1FD3F]/5" },
+                                    { icon: FileSignature, value: data.contracts.length, label: "Contratos", color: "text-[#A855F7]", bg: "bg-[#A855F7]/5" },
+                                    { icon: CheckCircle2, value: `${phasesComplete}/3`, label: "Etapas Base", color: "text-green-400", bg: "bg-green-400/5" },
+                                    { icon: Sparkles, value: `${progressPercent}%`, label: "Progresso", color: "text-blue-400", bg: "bg-blue-400/5" },
+                                ].map((s, i) => (
+                                    <div key={i} className="relative group/stat p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all hover:-translate-y-1">
+                                        <div className={`absolute inset-0 opacity-0 group-hover/stat:opacity-100 transition-opacity duration-500 rounded-2xl ${s.bg}`} />
+                                        <div className="relative z-10 text-center">
+                                            <s.icon className={`w-4 h-4 mx-auto mb-2 ${s.color} opacity-40 group-hover/stat:opacity-100 transition-all`} />
+                                            <p className={`text-2xl font-black tracking-tight ${s.color}`}>{s.value}</p>
+                                            <p className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-black mt-1">{s.label}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        )}
+                                ))}
+                            </div>
+                        </div>
                     </motion.div>
 
-                    {/* Client Access */}
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="lg:w-[360px] flex flex-col">
+                    {/* ═══ Right Column: Access Control ═══ */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="lg:col-span-4"
+                    >
                         <div className="flex items-center gap-3 mb-6">
                             <Shield className="w-5 h-5 text-[#E1FD3F]" />
                             <h3 className="text-sm font-bold uppercase tracking-widest">Acesso do Cliente</h3>
@@ -346,52 +368,48 @@ export default function CompanyDetailPage() {
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 gap-4">
-                                {(data.users || []).map((u: any) => (
+                                {(data.users || []).map((u: any, idx: number) => (
                                     <motion.div
                                         key={u.id}
-                                        initial={{ opacity: 0, y: 20 }}
+                                        initial={{ opacity: 0, y: 15 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="relative group overflow-hidden rounded-[32px] bg-white/[0.03] border border-white/10 p-6 backdrop-blur-md"
+                                        transition={{ delay: 0.3 + idx * 0.1 }}
+                                        className="relative group overflow-hidden rounded-[24px] bg-[#0A0A0A] border border-white/5 p-6 hover:border-white/10 transition-all"
                                     >
-                                        {/* Glass reflection effect */}
-                                        <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#E1FD3F]/5 blur-[60px] rounded-full pointer-events-none" />
+                                        <div className="absolute inset-0 bg-gradient-to-br from-[#E1FD3F]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                                         <div className="relative z-10">
                                             <div className="flex items-center justify-between mb-6">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#E1FD3F] to-[#80ff00] flex items-center justify-center shadow-lg shadow-[#E1FD3F]/20">
-                                                        <User className="w-5 h-5 text-black" strokeWidth={2.5} />
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 rounded-xl bg-[#E1FD3F]/10 border border-[#E1FD3F]/20 flex items-center justify-center">
+                                                        <User className="w-5 h-5 text-[#E1FD3F]" />
                                                     </div>
                                                     <div>
-                                                        <span className="text-[10px] text-[#E1FD3F] font-black uppercase tracking-[0.2em]">Acesso Master</span>
-                                                        <p className="text-white font-bold text-sm truncate max-w-[180px]">{u.email || "Email Indisponível"}</p>
+                                                        <span className="text-[10px] text-[#E1FD3F] font-black uppercase tracking-[0.2em] opacity-60">Acesso Master</span>
+                                                        <p className="text-white font-bold text-sm truncate max-w-[150px]">{u.email?.split('@')[0]}</p>
                                                     </div>
                                                 </div>
-                                                <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-black text-white/40 uppercase tracking-widest whitespace-nowrap">
-                                                    {u.role?.replace('_', ' ')}
-                                                </div>
+                                                <StatusBadge status="complete" />
                                             </div>
 
-                                            <div className="space-y-3">
-                                                {/* Email Field */}
-                                                <div className="relative group/field">
-                                                    <label className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1.5 block ml-1">Email de Login</label>
-                                                    <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-black/40 border border-white/5 transition-colors group-hover/field:border-white/10">
-                                                        <p className="text-xs text-white/80 font-medium flex-1 truncate">{u.email}</p>
-                                                        <button onClick={() => copyToClipboard(u.email, `email-${u.id}`)} className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white/30 hover:text-[#E1FD3F]">
-                                                            {copiedField === `email-${u.id}` ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                            <div className="space-y-4">
+                                                <div className="space-y-1.5">
+                                                    <label className="text-[9px] font-black text-white/20 uppercase tracking-widest block ml-1">Credenciais</label>
+
+                                                    {/* Email Field */}
+                                                    <div className="flex items-center gap-3 p-3 rounded-xl bg-black/40 border border-white/5">
+                                                        <p className="text-[11px] text-white/50 font-medium flex-1 truncate">{u.email}</p>
+                                                        <button onClick={() => copyToClipboard(u.email, `email-${u.id}`)} className="p-1.5 hover:bg-white/5 rounded-lg transition-colors text-white/20 hover:text-[#E1FD3F]">
+                                                            {copiedField === `email-${u.id}` ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                                                         </button>
                                                     </div>
-                                                </div>
 
-                                                {/* Password Field */}
-                                                <div className="relative group/field">
-                                                    <label className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1.5 block ml-1">Senha de Acesso</label>
-                                                    <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-black/40 border border-white/5 transition-colors group-hover/field:border-white/10">
-                                                        <p className="text-xs text-white/80 font-mono flex-1 truncate">{u.password_plain || "••••••••"}</p>
+                                                    {/* Password Field */}
+                                                    <div className="flex items-center gap-3 p-3 rounded-xl bg-black/40 border border-white/5">
+                                                        <p className="text-[11px] text-white/50 font-mono flex-1 truncate">{u.password_plain || "••••••••"}</p>
                                                         {u.password_plain && (
-                                                            <button onClick={() => copyToClipboard(u.password_plain, `pwd-${u.id}`)} className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white/30 hover:text-[#E1FD3F]">
-                                                                {copiedField === `pwd-${u.id}` ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                                            <button onClick={() => copyToClipboard(u.password_plain, `pwd-${u.id}`)} className="p-1.5 hover:bg-white/5 rounded-lg transition-colors text-white/20 hover:text-[#E1FD3F]">
+                                                                {copiedField === `pwd-${u.id}` ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                                                             </button>
                                                         )}
                                                     </div>
@@ -405,25 +423,26 @@ export default function CompanyDetailPage() {
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    className="bg-gradient-to-br from-[#E1FD3F]/10 to-[#80ff00]/5 border border-[#E1FD3F]/20 rounded-[32px] p-6 relative overflow-hidden"
+                                    transition={{ delay: 0.5 }}
+                                    className="bg-gradient-to-br from-[#E1FD3F]/20 via-[#E1FD3F]/5 to-transparent border border-[#E1FD3F]/20 rounded-[24px] p-6 relative overflow-hidden group"
                                 >
-                                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                                         <Globe className="w-12 h-12 text-[#E1FD3F]" />
                                     </div>
-                                    <label className="text-[9px] font-black text-[#E1FD3F] uppercase tracking-widest mb-3 block">URL Privada do Cliente</label>
+                                    <label className="text-[9px] font-black text-[#E1FD3F] uppercase tracking-widest mb-3 block">URL Privada</label>
                                     <div className="flex items-center gap-3 mb-4">
-                                        <p className="text-sm font-black text-white tracking-tight flex-1 truncate">
+                                        <p className="text-xs font-bold text-white/80 tracking-tight flex-1 truncate font-mono">
                                             {typeof window !== 'undefined' ? window.location.origin : ''}/login
                                         </p>
                                         <button
                                             onClick={() => copyToClipboard(`${typeof window !== 'undefined' ? window.location.origin : ''}/login`, 'login-url')}
-                                            className="w-10 h-10 rounded-xl bg-[#E1FD3F] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#E1FD3F]/20"
+                                            className="w-8 h-8 rounded-lg bg-[#E1FD3F] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#E1FD3F]/20"
                                         >
                                             {copiedField === 'login-url' ? <Check className="w-4 h-4" strokeWidth={3} /> : <Copy className="w-4 h-4" strokeWidth={3} />}
                                         </button>
                                     </div>
-                                    <p className="text-[10px] text-white/40 leading-relaxed max-w-[220px]">
-                                        O cliente acessa o dashboard via <strong className="text-white/60">/login</strong> usando as credenciais acima.
+                                    <p className="text-[10px] text-white/30 leading-relaxed italic">
+                                        Compartilhe este link com o cliente para que ele acesse o bunker.
                                     </p>
                                 </motion.div>
                             </div>
@@ -435,28 +454,33 @@ export default function CompanyDetailPage() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="mb-12"
+                    transition={{ delay: 0.4 }}
+                    className="relative"
                 >
-                    <div className="flex items-center gap-3 mb-6">
-                        <Sparkles className={`w-5 h-5 ${allPhasesComplete ? 'text-green-400' : 'text-[#E1FD3F]'}`} />
-                        <h2 className="text-lg font-bold uppercase tracking-widest">Central de Documentação</h2>
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-xl border ${allPhasesComplete ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-[#E1FD3F]/10 border-[#E1FD3F]/20 text-[#E1FD3F]'}`}>
+                                <Sparkles className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-black tracking-tight text-white">Central de Documentação</h2>
+                                <p className="text-xs text-white/30">Gerencie as fases iniciais do projeto</p>
+                            </div>
+                        </div>
+
                         {allPhasesComplete && (
-                            <motion.span
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-[10px] font-bold uppercase tracking-widest border border-green-500/20"
-                            >
-                                ✓ Completo
-                            </motion.span>
+                            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400">
+                                <CheckCircle2 className="w-4 h-4" />
+                                <span className="text-xs font-black uppercase tracking-widest">Etapas Blindadas</span>
+                            </div>
                         )}
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <PhaseCard
                             icon={Presentation}
                             title="Apresentação"
-                            subtitle="Upload da apresentação do projeto ou link do documento"
+                            subtitle="Upload do deck ou link do documento"
                             status={t.phase_presentation}
                             onClick={() => handlePhaseToggle("presentation")}
                             index={0}
@@ -465,7 +489,7 @@ export default function CompanyDetailPage() {
                         <PhaseCard
                             icon={Receipt}
                             title="Orçamento"
-                            subtitle="Validar valores, download do orçamento aprovado"
+                            subtitle="Validar valores e aprovação"
                             status={t.phase_budget}
                             onClick={() => handlePhaseToggle("budget")}
                             index={1}
@@ -473,79 +497,79 @@ export default function CompanyDetailPage() {
                         <PhaseCard
                             icon={FileSignature}
                             title="Contrato"
-                            subtitle="Assinatura digital ou upload do contrato"
+                            subtitle="Assinatura digital ou upload"
                             status={t.phase_contract}
                             onClick={() => handlePhaseToggle("contract")}
                             index={2}
                             url={t.contract_url}
                         />
                     </div>
-
-                    {/* Connector line */}
-                    <div className="hidden md:flex justify-center mt-4">
-                        <div className="flex items-center gap-1">
-                            {[0, 1, 2].map(i => (
-                                <div key={i} className="flex items-center">
-                                    <div className={`w-3 h-3 rounded-full transition-all duration-500 ${[t.phase_presentation, t.phase_budget, t.phase_contract][i] === 'complete'
-                                        ? 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]'
-                                        : 'bg-white/10'
-                                        }`} />
-                                    {i < 2 && (
-                                        <div className={`w-24 h-0.5 transition-all duration-500 ${[t.phase_presentation, t.phase_budget, t.phase_contract][i] === 'complete'
-                                            ? 'bg-green-400/40'
-                                            : 'bg-white/5'
-                                            }`} />
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
                 </motion.div>
 
                 {/* ═══ TABS ═══ */}
-                <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+                <div className="flex gap-2 p-1 bg-white/5 border border-white/10 rounded-2xl w-fit mb-8 overflow-x-auto">
                     {tabs.map(tab => (
                         <button
                             key={tab.key}
                             onClick={() => setActiveTab(tab.key)}
-                            className={`flex items-center gap-2.5 px-6 py-3.5 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.key
-                                ? 'bg-[#E1FD3F] text-[#050505] shadow-[0_0_20px_rgba(225,253,63,0.2)]'
-                                : 'bg-white/5 text-white/40 hover:bg-white/10 border border-white/10'
+                            className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.key
+                                ? 'bg-[#E1FD3F] text-[#050505] shadow-[0_0_20px_rgba(225,253,63,0.3)]'
+                                : 'text-white/40 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             <tab.icon className="w-4 h-4" />
                             {tab.label}
-                            <span className={`ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${activeTab === tab.key ? 'bg-black/20 text-[#050505]' : 'bg-white/5 text-white/20'}`}>
-                                {tab.count}
-                            </span>
+                            {tab.count > 0 && (
+                                <span className={`ml-1 px-1.5 py-0.5 rounded-md text-[10px] ${activeTab === tab.key ? 'bg-black/20 text-[#050505]' : 'bg-white/5 text-white/20'}`}>
+                                    {tab.count}
+                                </span>
+                            )}
                         </button>
                     ))}
                 </div>
 
                 {/* ═══ TAB CONTENT ═══ */}
-                <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                    className="bg-white/5 border border-white/10 rounded-[32px] p-8">
+                <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative overflow-hidden rounded-[32px] bg-[#0A0A0A] border border-white/5 p-8"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
 
                     {/* ── MILESTONES ── */}
                     {activeTab === "milestones" && (
-                        <div className="space-y-6">
-                            {/* Progress Bar */}
-                            {totalMilestones > 0 && (
-                                <div className="mb-2">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <span className="text-xs text-white/40 font-bold uppercase tracking-widest">Progresso Geral</span>
-                                        <span className="text-sm font-black text-[#E1FD3F]">{progressPercent}%</span>
+                        <div className="space-y-8">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                <div>
+                                    <h3 className="text-xl font-black text-white mb-1">Andamento do Projeto</h3>
+                                    <p className="text-sm text-white/30">Liste e gerencie as etapas de entrega</p>
+                                </div>
+                                <div className="flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl border border-white/5">
+                                    <div className="text-right">
+                                        <p className="text-[10px] text-white/20 uppercase tracking-widest font-black">Conatagem</p>
+                                        <p className="text-lg font-black text-[#E1FD3F]">{completedMilestones}/{totalMilestones}</p>
                                     </div>
-                                    <div className="h-2 rounded-full bg-white/5 overflow-hidden">
-                                        <motion.div
-                                            initial={{ width: 0 }}
-                                            animate={{ width: `${progressPercent}%` }}
-                                            transition={{ duration: 0.8, ease: "easeOut" }}
-                                            className="h-full rounded-full bg-gradient-to-r from-[#E1FD3F] to-green-400"
-                                        />
+                                    <div className="w-px h-8 bg-white/10" />
+                                    <div className="relative w-12 h-12">
+                                        <svg className="w-full h-full -rotate-90">
+                                            <circle cx="24" cy="24" r="20" className="stroke-white/5 fill-none" strokeWidth="4" />
+                                            <motion.circle
+                                                cx="24" cy="24" r="20"
+                                                className="stroke-[#E1FD3F] fill-none"
+                                                strokeWidth="4"
+                                                strokeDasharray="125.66"
+                                                initial={{ strokeDashoffset: 125.66 }}
+                                                animate={{ strokeDashoffset: 125.66 - (125.66 * progressPercent) / 100 }}
+                                                transition={{ duration: 1, ease: "easeOut" }}
+                                            />
+                                        </svg>
+                                        <span className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-[#E1FD3F]">
+                                            {progressPercent}%
+                                        </span>
                                     </div>
                                 </div>
-                            )}
+                            </div>
 
                             {/* Add Form */}
                             <form onSubmit={e => {
@@ -553,211 +577,250 @@ export default function CompanyDetailPage() {
                                 if (!milestoneForm.title) return;
                                 performAction("add_milestone", milestoneForm);
                                 setMilestoneForm({ title: "", due_date: "" });
-                            }} className="flex flex-col md:flex-row gap-4">
+                            }} className="flex flex-col md:flex-row gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
                                 <input value={milestoneForm.title}
                                     onChange={e => setMilestoneForm({ ...milestoneForm, title: e.target.value })}
                                     placeholder="Nova etapa (ex: Entrega da identidade visual)"
-                                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm" />
-                                <input type="date" value={milestoneForm.due_date}
-                                    onChange={e => setMilestoneForm({ ...milestoneForm, due_date: e.target.value })}
-                                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm w-full md:w-48" />
-                                <button type="submit" disabled={submitting || !milestoneForm.title}
-                                    className="bg-[#E1FD3F] text-[#050505] px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest disabled:opacity-50 flex items-center gap-2 justify-center whitespace-nowrap">
-                                    <Plus className="w-4 h-4" /> Criar Etapa
-                                </button>
+                                    className="flex-1 bg-transparent border-none px-4 py-2 outline-none text-sm placeholder:text-white/10 text-white" />
+                                <div className="flex items-center gap-3">
+                                    <input type="date" value={milestoneForm.due_date}
+                                        onChange={e => setMilestoneForm({ ...milestoneForm, due_date: e.target.value })}
+                                        className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 outline-none focus:border-[#E1FD3F]/50 transition-all text-[11px] w-full md:w-40 text-white/40 font-mono" />
+                                    <button type="submit" disabled={submitting || !milestoneForm.title}
+                                        className="bg-[#E1FD3F] text-[#050505] px-6 py-2.5 rounded-xl font-bold text-[11px] uppercase tracking-widest disabled:opacity-50 flex items-center gap-2 hover:scale-[1.02] transition-all">
+                                        <Plus className="w-3.5 h-3.5" /> Criar
+                                    </button>
+                                </div>
                             </form>
 
                             {/* List */}
-                            {data.milestones.length === 0 ? (
-                                <p className="text-center text-white/20 py-12 text-sm">Nenhuma etapa criada. Adicione acima para começar.</p>
-                            ) : (
-                                <div className="space-y-3">
-                                    {data.milestones.map((m: any, i: number) => (
+                            <div className="space-y-3">
+                                {data.milestones.length === 0 ? (
+                                    <div className="py-20 text-center border-2 border-dashed border-white/5 rounded-3xl">
+                                        <Clock className="w-12 h-12 text-white/5 mx-auto mb-4" />
+                                        <p className="text-white/20 text-sm italic">Nenhuma etapa iniciada para este cliente.</p>
+                                    </div>
+                                ) : (
+                                    data.milestones.map((m: any, i: number) => (
                                         <motion.div
                                             key={m.id}
-                                            initial={{ opacity: 0, x: -10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: i * 0.03 }}
-                                            className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all duration-500 ${m.status === 'complete'
-                                                ? 'bg-green-500/5 border-green-500/20'
+                                            className={`flex items-center gap-4 p-5 rounded-2xl border transition-all duration-500 group ${m.status === 'complete'
+                                                ? 'bg-green-500/5 border-green-500/10'
                                                 : m.status === 'in_progress'
-                                                    ? 'bg-blue-500/5 border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.1)]'
-                                                    : 'bg-white/[0.02] border-white/5'
+                                                    ? 'bg-blue-500/5 border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.05)]'
+                                                    : 'bg-white/[0.01] border-white/5 hover:border-white/10 shadow-sm'
                                                 }`}
                                         >
-                                            {/* Status Toggle */}
                                             <button
                                                 onClick={() => performAction("update_milestone_status", { id: m.id, status: cycleMilestoneStatus(m.status || 'pending') })}
-                                                className="flex-shrink-0 transition-transform hover:scale-110"
+                                                className="relative group/toggle"
                                             >
                                                 {m.status === 'complete' ? (
-                                                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 300 }}>
-                                                        <CheckCircle2 className="w-7 h-7 text-green-400" />
-                                                    </motion.div>
+                                                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/40">
+                                                        <Check className="w-3.5 h-3.5 text-green-400" />
+                                                    </div>
                                                 ) : m.status === 'in_progress' ? (
-                                                    <div className="relative">
-                                                        <PlayCircle className="w-7 h-7 text-blue-400" />
-                                                        <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-blue-400 animate-ping" />
+                                                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/40">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
                                                     </div>
                                                 ) : (
-                                                    <Circle className="w-7 h-7 text-white/15 hover:text-white/30 transition-colors" />
+                                                    <div className="w-6 h-6 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover/toggle:border-white/30 transition-colors" />
                                                 )}
                                             </button>
 
-                                            {/* Content */}
-                                            <div className="flex-1">
-                                                <p className={`text-sm font-bold transition-all ${m.status === 'complete' ? 'text-white/50 line-through' : m.status === 'in_progress' ? 'text-blue-300' : 'text-white'}`}>
+                                            <div className="flex-1 min-w-0">
+                                                <p className={`text-sm font-bold truncate ${m.status === 'complete' ? 'text-white/20 line-through' : 'text-white'}`}>
                                                     {m.title}
                                                 </p>
-                                                <div className="flex items-center gap-3 mt-1">
+                                                <div className="flex items-center gap-3 mt-1 opacity-60">
                                                     {m.due_date && (
-                                                        <p className="text-[10px] text-white/20 font-mono">
-                                                            <Calendar className="w-3 h-3 inline mr-1" />
+                                                        <p className="text-[10px] font-mono flex items-center gap-1">
+                                                            <Calendar className="w-3 h-3" />
                                                             {new Date(m.due_date).toLocaleDateString()}
                                                         </p>
                                                     )}
-                                                    <StatusBadge status={m.status || 'pending'} />
                                                 </div>
                                             </div>
 
-                                            {/* Delete */}
-                                            <button onClick={() => performAction("delete_milestone", { id: m.id })}
-                                                className="text-white/10 hover:text-red-400 transition-colors flex-shrink-0">
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
+                                            <div className="flex items-center gap-4">
+                                                <StatusBadge status={m.status || 'pending'} />
+                                                <button onClick={() => performAction("delete_milestone", { id: m.id })}
+                                                    className="opacity-0 group-hover:opacity-100 p-2 text-white/10 hover:text-red-400 transition-all">
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
                                         </motion.div>
-                                    ))}
-                                </div>
-                            )}
+                                    ))
+                                )}
+                            </div>
                         </div>
                     )}
 
                     {/* ── DOCUMENTS ── */}
                     {activeTab === "documents" && (
-                        <div className="space-y-6">
+                        <div className="space-y-8">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                <div>
+                                    <h3 className="text-xl font-black text-white mb-1">Arquivos & Ativos</h3>
+                                    <p className="text-sm text-white/30">Repositório de documentos do projeto</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="p-3 rounded-2xl bg-white/5 border border-white/5 text-center px-6">
+                                        <p className="text-[10px] text-white/20 uppercase tracking-widest font-black">Total</p>
+                                        <p className="text-xl font-black text-[#A855F7]">{data.documents.length}</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <form onSubmit={e => {
                                 e.preventDefault();
                                 if (!documentForm.title || !documentForm.url) return;
                                 performAction("add_document", documentForm);
                                 setDocumentForm({ title: "", url: "", visible_to_client: true, doc_type: "other" });
-                            }} className="flex flex-col md:flex-row gap-4 items-end">
-                                <div className="flex-1 space-y-1">
-                                    <label className="text-[10px] text-white/30 uppercase tracking-widest font-bold">Nome</label>
+                            }} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5">
+                                <div className="md:col-span-5 space-y-1.5">
+                                    <label className="text-[9px] text-white/30 uppercase tracking-[0.2em] font-black ml-1">Título</label>
                                     <input value={documentForm.title}
                                         onChange={e => setDocumentForm({ ...documentForm, title: e.target.value })}
-                                        placeholder="Nome do documento"
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm" />
+                                        placeholder="Manual da Marca, Logo PNG..."
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm text-white" />
                                 </div>
-                                <div className="flex-1 space-y-1">
-                                    <label className="text-[10px] text-white/30 uppercase tracking-widest font-bold">URL</label>
+                                <div className="md:col-span-5 space-y-1.5">
+                                    <label className="text-[9px] text-white/30 uppercase tracking-[0.2em] font-black ml-1">URL / Link</label>
                                     <input value={documentForm.url}
                                         onChange={e => setDocumentForm({ ...documentForm, url: e.target.value })}
-                                        placeholder="https://..."
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm" />
+                                        placeholder="Cloud, Drive, Figma..."
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm text-white" />
                                 </div>
-                                <label className="flex items-center gap-2 text-xs text-white/40 cursor-pointer whitespace-nowrap px-2 py-3">
-                                    <input type="checkbox" checked={documentForm.visible_to_client}
-                                        onChange={e => setDocumentForm({ ...documentForm, visible_to_client: e.target.checked })}
-                                        className="rounded accent-[#E1FD3F]" />
-                                    <Eye className="w-3.5 h-3.5" />
-                                </label>
-                                <button type="submit" disabled={submitting || !documentForm.title || !documentForm.url}
-                                    className="bg-[#E1FD3F] text-[#050505] px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest disabled:opacity-50 flex items-center gap-2 justify-center whitespace-nowrap">
-                                    <Plus className="w-4 h-4" /> Adicionar
-                                </button>
+                                <div className="md:col-span-2 flex items-end gap-2">
+                                    <button type="button"
+                                        onClick={() => setDocumentForm({ ...documentForm, visible_to_client: !documentForm.visible_to_client })}
+                                        className={`flex-1 flex items-center justify-center p-2.5 rounded-xl border transition-all ${documentForm.visible_to_client ? 'bg-[#E1FD3F]/10 border-[#E1FD3F]/20 text-[#E1FD3F]' : 'bg-white/5 border-white/10 text-white/20'}`}>
+                                        {documentForm.visible_to_client ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                                    </button>
+                                    <button type="submit" disabled={submitting || !documentForm.title || !documentForm.url}
+                                        className="flex-[2] bg-white text-black px-4 py-2.5 rounded-xl font-black text-[11px] uppercase tracking-widest disabled:opacity-50 hover:bg-[#E1FD3F] transition-colors">
+                                        Subir
+                                    </button>
+                                </div>
                             </form>
 
-                            {data.documents.length === 0 ? (
-                                <p className="text-center text-white/20 py-12 text-sm">Nenhum documento. Adicione acima.</p>
-                            ) : (
-                                <div className="space-y-3">
-                                    {data.documents.map((d: any) => (
-                                        <div key={d.id} className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
-                                            <FileText className="w-5 h-5 text-white/20 flex-shrink-0" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {data.documents.length === 0 ? (
+                                    <div className="md:col-span-2 py-20 text-center border-2 border-dashed border-white/5 rounded-3xl">
+                                        <FileText className="w-12 h-12 text-white/5 mx-auto mb-4" />
+                                        <p className="text-white/20 text-sm italic">Nenhum documento anexado.</p>
+                                    </div>
+                                ) : (
+                                    data.documents.map((d: any) => (
+                                        <div key={d.id} className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group">
+                                            <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                                                <FileText className="w-5 h-5 text-white/20" />
+                                            </div>
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-bold text-white truncate">{d.title}</p>
                                                 <a href={d.url} target="_blank" rel="noopener"
-                                                    className="text-[10px] text-[#E1FD3F]/60 hover:text-[#E1FD3F] font-mono truncate block mt-0.5">
-                                                    <LinkIcon className="w-3 h-3 inline mr-1" />{d.url}
+                                                    className="inline-flex items-center gap-1.5 text-[10px] text-[#E1FD3F]/60 hover:text-[#E1FD3F] font-mono mt-1 transition-colors">
+                                                    <LinkIcon className="w-3 h-3" /> Ver arquivo
                                                 </a>
                                             </div>
-                                            <button onClick={() => performAction("toggle_document_visibility", { id: d.id })}
-                                                className={`p-2 rounded-lg transition-all ${d.visible_to_client ? 'text-[#E1FD3F] bg-[#E1FD3F]/10' : 'text-white/20 bg-white/5'}`}
-                                                title={d.visible_to_client ? "Visível" : "Oculto"}>
-                                                {d.visible_to_client ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                                            </button>
-                                            <button onClick={() => performAction("delete_document", { id: d.id })}
-                                                className="text-white/10 hover:text-red-400 transition-colors">
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
+                                            <div className="flex items-center gap-1">
+                                                <button onClick={() => performAction("toggle_document_visibility", { id: d.id })}
+                                                    className={`p-2 rounded-lg transition-all ${d.visible_to_client ? 'text-[#E1FD3F] bg-[#E1FD3F]/10' : 'text-white/20 bg-white/5'}`}>
+                                                    {d.visible_to_client ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                                                </button>
+                                                <button onClick={() => performAction("delete_document", { id: d.id })}
+                                                    className="p-2 text-white/10 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+                                                    <Trash2 className="w-3.5 h-3.5" />
+                                                </button>
+                                            </div>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
+                                    ))
+                                )}
+                            </div>
                         </div>
                     )}
 
                     {/* ── UPDATES ── */}
                     {activeTab === "updates" && (
-                        <div className="space-y-6">
+                        <div className="space-y-8">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                <div>
+                                    <h3 className="text-xl font-black text-white mb-1">Mural de Novidades</h3>
+                                    <p className="text-sm text-white/30">Comunicações e logs de progresso</p>
+                                </div>
+                                <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E1FD3F]/10 text-[#E1FD3F] border border-[#E1FD3F]/20 text-[10px] font-black uppercase tracking-widest">
+                                    <History className="w-3.5 h-3.5" /> Ver Histórico Completo
+                                </button>
+                            </div>
+
                             <form onSubmit={e => {
                                 e.preventDefault();
                                 if (!updateForm.title || !updateForm.body) return;
                                 performAction("add_update", updateForm);
                                 setUpdateForm({ title: "", body: "", visible_to_client: true });
-                            }} className="space-y-4">
+                            }} className="space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/5 shadow-2xl">
                                 <div className="flex flex-col md:flex-row gap-4">
                                     <input value={updateForm.title}
                                         onChange={e => setUpdateForm({ ...updateForm, title: e.target.value })}
-                                        placeholder="Título da atualização"
-                                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm" />
-                                    <label className="flex items-center gap-2 text-xs text-white/40 cursor-pointer whitespace-nowrap px-3">
-                                        <input type="checkbox" checked={updateForm.visible_to_client}
-                                            onChange={e => setUpdateForm({ ...updateForm, visible_to_client: e.target.checked })}
-                                            className="rounded accent-[#E1FD3F]" />
-                                        <Eye className="w-3.5 h-3.5" /> Visível
-                                    </label>
+                                        placeholder="Título da atualização (ex: Campanha aprovada!)"
+                                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm text-white" />
+                                    <button type="button"
+                                        onClick={() => setUpdateForm({ ...updateForm, visible_to_client: !updateForm.visible_to_client })}
+                                        className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all ${updateForm.visible_to_client ? 'bg-[#E1FD3F]/10 border-[#E1FD3F]/20 text-[#E1FD3F]' : 'bg-white/5 border-white/10 text-white/20'}`}>
+                                        {updateForm.visible_to_client ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                                        <span className="text-[10px] font-bold uppercase tracking-widest">Visibilidade Cli.</span>
+                                    </button>
                                 </div>
                                 <textarea value={updateForm.body}
                                     onChange={e => setUpdateForm({ ...updateForm, body: e.target.value })}
-                                    placeholder="Descreva o progresso, entrega ou novidade..."
-                                    rows={3}
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm resize-none" />
-                                <button type="submit" disabled={submitting || !updateForm.title || !updateForm.body}
-                                    className="bg-[#E1FD3F] text-[#050505] px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest disabled:opacity-50 flex items-center gap-2">
-                                    <Send className="w-4 h-4" /> Publicar
-                                </button>
+                                    placeholder="Mensagem para o cliente..."
+                                    rows={4}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm resize-none text-white/80" />
+                                <div className="flex justify-end">
+                                    <button type="submit" disabled={submitting || !updateForm.title || !updateForm.body}
+                                        className="bg-[#E1FD3F] text-[#050505] px-8 py-3 rounded-xl font-black text-xs uppercase tracking-widest disabled:opacity-50 flex items-center gap-2 hover:shadow-[0_0_20px_rgba(225,253,63,0.3)] transition-all">
+                                        <Send className="w-4 h-4" /> Enviar para o Mural
+                                    </button>
+                                </div>
                             </form>
 
-                            {data.updates.length === 0 ? (
-                                <p className="text-center text-white/20 py-12 text-sm">Nenhuma atualização publicada.</p>
-                            ) : (
-                                <div className="space-y-4">
-                                    {data.updates.map((u: any) => (
-                                        <div key={u.id} className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
-                                            <div className="flex items-start justify-between mb-3">
-                                                <div>
-                                                    <h4 className="text-sm font-bold text-white">{u.title}</h4>
-                                                    <p className="text-[10px] text-white/20 font-mono mt-0.5">
-                                                        {new Date(u.created_at).toLocaleDateString()} · {new Date(u.created_at).toLocaleTimeString()}
-                                                    </p>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <button onClick={() => performAction("toggle_update_visibility", { id: u.id })}
-                                                        className={`p-2 rounded-lg transition-all ${u.visible_to_client ? 'text-[#E1FD3F] bg-[#E1FD3F]/10' : 'text-white/20 bg-white/5'}`}>
-                                                        {u.visible_to_client ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                                                    </button>
-                                                    <button onClick={() => performAction("delete_update", { id: u.id })}
-                                                        className="text-white/10 hover:text-red-400 transition-colors">
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
+                            <div className="space-y-4">
+                                {data.updates.length === 0 ? (
+                                    <div className="py-20 text-center border-2 border-dashed border-white/5 rounded-3xl">
+                                        <MessageSquare className="w-12 h-12 text-white/5 mx-auto mb-4" />
+                                        <p className="text-white/20 text-sm italic">Nenhuma comunicação enviada ainda.</p>
+                                    </div>
+                                ) : (
+                                    data.updates.map((u: any) => (
+                                        <div key={u.id} className="relative group p-6 rounded-[24px] bg-white/[0.01] border border-white/5 hover:border-white/10 transition-all overflow-hidden">
+                                            <div className="absolute top-0 right-0 p-3 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                                                <button onClick={() => performAction("toggle_update_visibility", { id: u.id })}
+                                                    className={`p-2 rounded-lg transition-all ${u.visible_to_client ? 'text-[#E1FD3F] bg-[#E1FD3F]/10' : 'text-white/10 hover:text-white hover:bg-white/5'}`}>
+                                                    {u.visible_to_client ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                                                </button>
+                                                <button onClick={() => performAction("delete_update", { id: u.id })}
+                                                    className="p-2 text-white/5 hover:text-red-400 transition-colors">
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#E1FD3F] mt-2 shadow-[0_0_10px_#E1FD3F]" />
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-3 mb-2">
+                                                        <h4 className="text-base font-bold text-white">{u.title}</h4>
+                                                        <p className="text-[10px] text-white/20 font-mono">
+                                                            {new Date(u.created_at).toLocaleDateString()} · {new Date(u.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </p>
+                                                    </div>
+                                                    <p className="text-sm text-white/50 leading-relaxed whitespace-pre-wrap">{u.body}</p>
                                                 </div>
                                             </div>
-                                            <p className="text-sm text-white/60 leading-relaxed">{u.body}</p>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
+                                    ))
+                                )}
+                            </div>
                         </div>
                     )}
                 </motion.div>
@@ -766,43 +829,52 @@ export default function CompanyDetailPage() {
             {/* ═══ PHASE COMPLETION MODAL ═══ */}
             <AnimatePresence>
                 {phaseModal && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                            onClick={() => setPhaseModal(null)}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-xl">
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            initial={{ opacity: 0, scale: 0.9, y: 30 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative w-full max-w-lg bg-[#0A0A0A] border border-white/10 rounded-[28px] overflow-hidden"
+                            exit={{ opacity: 0, scale: 0.9, y: 30 }}
+                            className="relative w-full max-w-lg bg-[#0A0A0A] border border-white/10 rounded-[40px] shadow-[0_30px_60px_rgba(0,0,0,0.6)] overflow-hidden"
                         >
-                            <div className="p-6 border-b border-white/5">
-                                <h2 className="text-xl font-bold">
-                                    Concluir {phaseModal === 'presentation' ? 'Apresentação' : phaseModal === 'budget' ? 'Orçamento' : 'Contrato'}
-                                </h2>
-                                <p className="text-xs text-white/40 mt-1">Opcional: adicione um link do documento</p>
-                            </div>
-                            <div className="p-6 space-y-4">
-                                {(phaseModal === 'presentation' || phaseModal === 'contract') && (
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Link do {phaseModal === 'presentation' ? 'arquivo' : 'contrato'} (opcional)</label>
-                                        <input
-                                            value={phaseUrl}
-                                            onChange={e => setPhaseUrl(e.target.value)}
-                                            placeholder="https://drive.google.com/..."
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm"
-                                        />
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#E1FD3F]/5 to-transparent pointer-events-none" />
+
+                            <div className="p-10 relative z-10">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                                        <CheckCircle2 className="w-8 h-8 text-green-400" />
                                     </div>
-                                )}
-                                <div className="flex gap-3 pt-2">
-                                    <button onClick={() => setPhaseModal(null)}
-                                        className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-all">
-                                        Cancelar
-                                    </button>
-                                    <button onClick={handlePhaseComplete} disabled={submitting}
-                                        className="flex-[2] bg-green-500 text-black px-4 py-3 rounded-xl font-black text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(34,197,94,0.3)] disabled:opacity-50 flex items-center gap-2 justify-center">
-                                        <CheckCircle2 className="w-4 h-4" /> Marcar como Concluído
-                                    </button>
+                                    <div>
+                                        <h2 className="text-2xl font-black tracking-tight">Finalizar Etapa</h2>
+                                        <p className="text-sm text-white/40">{phaseModal === 'presentation' ? 'Certifique-se que o deck foi apresentado' : phaseModal === 'budget' ? 'Confirme se o orçamento foi aprovado' : 'Valide a assinatura do contrato'}</p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-6">
+                                    {(phaseModal === 'presentation' || phaseModal === 'contract') && (
+                                        <div className="space-y-2.5">
+                                            <label className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-black ml-1">Link do Documento (Opcional)</label>
+                                            <div className="relative">
+                                                <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
+                                                <input
+                                                    value={phaseUrl}
+                                                    onChange={e => setPhaseUrl(e.target.value)}
+                                                    placeholder="https://drive.google.com/..."
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 outline-none focus:border-[#E1FD3F]/50 transition-all text-sm font-mono text-white/60"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="flex gap-4 pt-4">
+                                        <button onClick={() => setPhaseModal(null)}
+                                            className="flex-1 px-6 py-4 rounded-2xl border border-white/10 text-xs font-black uppercase tracking-widest hover:bg-white/5 transition-all">
+                                            Cancelar
+                                        </button>
+                                        <button onClick={handlePhaseComplete} disabled={submitting}
+                                            className="flex-[2] bg-white text-black hover:bg-[#E1FD3F] px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-green-500/10 disabled:opacity-50 flex items-center gap-3 justify-center transition-all">
+                                            <CheckCircle2 className="w-5 h-5" /> Blindar Etapa
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
