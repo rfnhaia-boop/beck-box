@@ -10,10 +10,10 @@ export async function POST(request: NextRequest) {
         const { action, data, messages } = await request.json();
 
         // --- N8N INTEGRATION ---
-        const n8nUrl = process.env.N8N_API_URL;
+        const n8nUrl = process.env.N8N_CHAT_WEBHOOK_URL;
         const n8nKey = process.env.N8N_API_KEY;
 
-        if (n8nUrl && n8nKey && action !== "enhance_budget") {
+        if (n8nUrl && action !== "enhance_budget") {
             try {
                 const lastMessage = messages[messages.length - 1].content;
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "X-N8N-API-KEY": n8nKey
+                        ...(n8nKey ? { "X-N8N-API-KEY": n8nKey } : {})
                     },
                     body: JSON.stringify({
                         chatInput: lastMessage,
