@@ -201,14 +201,17 @@ export const ProductCard = ({ product, index = 0, isEliteUser = true }: ProductC
                 {eliteOnly && (
                     <div className="absolute top-5 right-5">
                         <motion.div
-                            className="flex items-center gap-1 px-2 py-1 rounded-full bg-[#A855F7]/20 border border-[#A855F7]/40"
+                            className={`flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all duration-500 ${isLocked
+                                    ? 'bg-white/5 border-white/10 text-white/20'
+                                    : 'bg-[#A855F7]/10 border-[#A855F7]/40 text-[#A855F7] shadow-[0_0_15px_rgba(168,85,247,0.2)]'
+                                }`}
                             animate={!isLocked ? {
-                                borderColor: ["rgba(168, 85, 247, 0.4)", "rgba(168, 85, 247, 0.8)", "rgba(168, 85, 247, 0.4)"]
+                                boxShadow: ["0 0 10px rgba(168,85,247,0.1)", "0 0 20px rgba(168,85,247,0.3)", "0 0 10px rgba(168,85,247,0.1)"]
                             } : {}}
                             transition={{ duration: 2, repeat: Infinity }}
                         >
-                            <Crown className="w-3 h-3 text-[#A855F7]" />
-                            <span className="text-[9px] font-bold tracking-wider text-[#A855F7] uppercase">Elite</span>
+                            <Crown className={`w-3 h-3 ${isLocked ? 'text-white/20' : 'text-[#A855F7]'}`} />
+                            <span className="text-[10px] font-black uppercase tracking-widest">Elite</span>
                         </motion.div>
                     </div>
                 )}

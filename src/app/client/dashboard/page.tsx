@@ -6,7 +6,8 @@ import {
     PlayCircle, Loader2, Calendar,
     Presentation, Receipt, FileSignature,
     MessageSquare, Link as LinkIcon, Building2,
-    Sparkles, ArrowRight
+    Sparkles, ArrowRight, ArrowUpRight, Plus, ExternalLink,
+    Crown
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -154,9 +155,15 @@ export default function ClientDashboardPage() {
                             </div>
                             <div>
                                 <h1 className="text-2xl font-black tracking-tight text-white mb-0.5">{t.name}</h1>
-                                <div className="flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#E1FD3F] animate-pulse" />
-                                    <p className="text-xs font-medium text-white/40 uppercase tracking-widest">Painel do Projeto</p>
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#E1FD3F] animate-pulse" />
+                                        <p className="text-xs font-medium text-white/40 uppercase tracking-widest">Painel do Projeto</p>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#A855F7]/10 border border-[#A855F7]/30">
+                                        <Crown className="w-2.5 h-2.5 text-[#A855F7]" />
+                                        <span className="text-[8px] font-black tracking-widest text-[#A855F7] uppercase">Elite Pro</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

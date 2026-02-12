@@ -198,11 +198,11 @@ export default function DashboardPage() {
                         <div className="flex items-center gap-3">
                             {/* Plan Badge */}
                             <motion.div
-                                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#E1FD3F]/10 to-[#A855F7]/10 border border-[#E1FD3F]/30 shadow-[0_0_20px_rgba(225,253,63,0.1)]"
-                                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(225, 253, 63, 0.2)" }}
+                                className="flex items-center gap-2.5 px-5 py-2 rounded-full bg-[#A855F7]/10 border border-[#A855F7]/30 shadow-[0_0_20px_rgba(168,85,247,0.15)] group/badge"
+                                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(168, 85, 247, 0.25)" }}
                             >
-                                <Crown className="w-4 h-4 text-[#E1FD3F]" />
-                                <span className="text-[#E1FD3F] text-sm font-bold uppercase tracking-wider">Vitalício</span>
+                                <Crown className="w-4 h-4 text-[#A855F7] animate-pulse" />
+                                <span className="text-white text-[11px] font-black uppercase tracking-[0.2em]">Elite Pro</span>
                             </motion.div>
 
                             {/* Logout Button */}
