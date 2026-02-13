@@ -37,6 +37,7 @@ export const Header = () => {
     };
 
     const guestNavItems = [
+        { label: "Home", href: "/" },
         { label: "Blog", href: "/blog" },
     ];
 

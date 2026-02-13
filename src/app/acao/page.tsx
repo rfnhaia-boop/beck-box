@@ -5,11 +5,11 @@ import { Footer } from "@/components/ui/Footer";
 import { LiquidGlass } from "@/components/ui/LiquidGlass";
 import { createClient } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
-import { Bot, Check, Zap, ArrowRight, Brain, MessageSquare, Terminal } from "lucide-react";
+import { Rocket, Check, ArrowRight, Shield, PlayCircle, FolderOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function AdaoSalesPage() {
+export default function AcaoSalesPage() {
     const router = useRouter();
     const supabase = createClient();
     const [loading, setLoading] = useState(false);
@@ -24,7 +24,11 @@ export default function AdaoSalesPage() {
                     .from('user_products')
                     .select('*')
                     .eq('user_id', user.id)
-                    .eq('product_id', 'adao')
+                    .eq('product_id', 'acao') // Assuming 'acao' or 'acao_30k' - using 'acao' based on folder name but plans page used 'acao_30k'. Let's check plans. page used 'acao_30k'. Wait.
+                    // Actually, let's use 'acao_30k' to match the plans page logic logic if that's what was used. 
+                    // In PlansPage snippet: id: "acao_30k".
+                    // So I must use "acao_30k".
+                    .eq('product_id', 'acao_30k')
                     .single();
 
                 if (data) setHasAccess(true);
@@ -36,7 +40,7 @@ export default function AdaoSalesPage() {
 
     const handlePurchase = async () => {
         if (hasAccess) {
-            router.push("/adao/chat");
+            router.push("/sede"); // Redirect to dashboard to access it
             return;
         }
 
@@ -45,26 +49,25 @@ export default function AdaoSalesPage() {
             const { data: { user } } = await supabase.auth.getUser();
 
             if (!user) {
-                router.push("/login?redirect=/adao");
+                router.push("/login?redirect=/acao");
                 return;
             }
 
-            // Simulating Purchase
             const { error } = await supabase
                 .from('user_products')
                 .insert({
                     user_id: user.id,
-                    product_id: 'adao'
+                    product_id: 'acao_30k'
                 });
 
             if (error) {
-                if (error.code === '23505') { // Already owned
-                    router.push("/adao/chat");
+                if (error.code === '23505') {
+                    router.push("/sede");
                 } else {
                     alert("Erro ao processar. Tente novamente.");
                 }
             } else {
-                router.push("/adao/chat");
+                router.push("/sede");
             }
         } catch (error) {
             console.error(error);
@@ -74,7 +77,7 @@ export default function AdaoSalesPage() {
     };
 
     return (
-        <main className="min-h-screen relative bg-[#050505] text-white overflow-x-hidden font-sans selection:bg-[#E1FD3F] selection:text-black">
+        <main className="min-h-screen relative bg-[#050505] text-white overflow-x-hidden font-sans selection:bg-blue-500 selection:text-white">
             <FuturisticBackground />
 
             {/* Hero Section */}
@@ -83,10 +86,10 @@ export default function AdaoSalesPage() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E1FD3F]/10 border border-[#E1FD3F]/20 text-[#E1FD3F] text-[10px] font-black uppercase tracking-[0.3em] mb-8"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-[0.3em] mb-8"
                     >
-                        <span className="w-2 h-2 rounded-full bg-[#E1FD3F] animate-pulse" />
-                        Sistema de Inteligência Artificial V3.0
+                        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                        Método Validado
                     </motion.div>
 
                     <motion.h1
@@ -95,7 +98,7 @@ export default function AdaoSalesPage() {
                         transition={{ delay: 0.1 }}
                         className="text-6xl md:text-9xl font-black tracking-tighter leading-none mb-8"
                     >
-                        ADÃO <span className="text-[#E1FD3F]">IA</span>
+                        AÇÃO <span className="text-blue-500">30K</span>
                     </motion.h1>
 
                     <motion.p
@@ -104,8 +107,8 @@ export default function AdaoSalesPage() {
                         transition={{ delay: 0.2 }}
                         className="text-xl md:text-2xl text-white/50 max-w-2xl font-medium leading-relaxed mb-12"
                     >
-                        Sua mente estratégica digital. Treinada em vendas, copywriting e gestão de projetos.
-                        Não é apenas um chat. É o seu <span className="text-white">sócio digital</span>.
+                        O plano de voo completo. Aulas, contratos blindados e a estrutura exata para escalar sua operação.
+                        <span className="text-white block mt-2">Simples. Direto. Brutal.</span>
                     </motion.p>
 
                     <motion.div
@@ -117,9 +120,9 @@ export default function AdaoSalesPage() {
                         <button
                             onClick={handlePurchase}
                             disabled={loading || checkingAccess}
-                            className="flex-1 py-6 px-8 rounded-2xl bg-[#E1FD3F] text-black font-black uppercase tracking-[0.2em] hover:bg-[#c5df30] transition-all shadow-[0_0_40px_rgba(225,253,63,0.3)] hover:scale-[1.02] flex items-center justify-center gap-3"
+                            className="flex-1 py-6 px-8 rounded-2xl bg-blue-500 text-white font-black uppercase tracking-[0.2em] hover:bg-blue-600 transition-all shadow-[0_0_40px_rgba(59,130,246,0.3)] hover:scale-[1.02] flex items-center justify-center gap-3"
                         >
-                            {loading ? "Processando..." : hasAccess ? "Acessar Sistema" : "Ativar Adão IA - R$ 47"}
+                            {loading ? "Processando..." : hasAccess ? "Acessar Plataforma" : "Comprar Agora - R$ 33"}
                             {!loading && <ArrowRight className="w-5 h-5" />}
                         </button>
                     </motion.div>
@@ -131,50 +134,33 @@ export default function AdaoSalesPage() {
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                     {[
                         {
-                            icon: Brain,
-                            title: "Cérebro de Vendas",
-                            desc: "Treinado com os melhores scripts de vendas e funis do mercado."
+                            icon: PlayCircle,
+                            title: "Masterclasses",
+                            desc: "Aulas práticas ensinando o passo a passo da operação."
                         },
                         {
-                            icon: MessageSquare,
-                            title: "Copywriting",
-                            desc: "Gera e-mails, anúncios e VSLs prontos para conversão."
+                            icon: Shield,
+                            title: "Contratos Blindados",
+                            desc: "Modelos jurídicos validados para proteger seu negócio."
                         },
                         {
-                            icon: Terminal,
-                            title: "Integração Total",
-                            desc: "Funciona dentro do ecossistema Black Box com contexto dos seus projetos."
+                            icon: FolderOpen,
+                            title: "Kit de Ferramentas",
+                            desc: "Planilhas, scripts e arquivos prontos para download."
                         }
                     ].map((feature, i) => (
                         <LiquidGlass
                             key={i}
-                            intensity="high"
-                            className="p-8 group hover:border-[#E1FD3F]/30 transition-colors"
+                            intensity="medium"
+                            className="p-8 group hover:border-blue-500/30 transition-colors"
                         >
-                            <div className="w-14 h-14 rounded-2xl bg-[#E1FD3F]/10 flex items-center justify-center text-[#E1FD3F] mb-6 group-hover:scale-110 transition-transform relative z-10">
+                            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 mb-6 group-hover:scale-110 transition-transform relative z-10">
                                 <feature.icon className="w-7 h-7" />
                             </div>
                             <h3 className="text-2xl font-black text-white mb-4 relative z-10">{feature.title}</h3>
                             <p className="text-white/40 font-medium leading-relaxed relative z-10">{feature.desc}</p>
                         </LiquidGlass>
                     ))}
-                </div>
-            </section>
-
-            {/* Interface Preview */}
-            <section className="relative z-10 py-32 px-6 overflow-hidden">
-                <div className="max-w-6xl mx-auto relative">
-                    <div className="absolute inset-0 bg-[#E1FD3F] blur-[150px] opacity-10" />
-                    <div className="relative rounded-[32px] border border-white/10 bg-[#0F0F0F] p-2 md:p-4 shadow-2xl">
-                        <div className="aspect-video rounded-[24px] overflow-hidden bg-[#050505] relative flex items-center justify-center border border-white/5">
-                            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
-                            {/* Mock Interface */}
-                            <div className="text-center">
-                                <Bot className="w-24 h-24 text-[#E1FD3F] mx-auto mb-6 opacity-50" />
-                                <div className="text-[#E1FD3F] text-xs font-mono uppercase tracking-[0.5em] animate-pulse">Awaiting Command Input...</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
 

@@ -32,7 +32,7 @@ export const ProductCard = ({ product, index = 0, isEliteUser = true, forceElite
     const [isHovered, setIsHovered] = useState(false);
 
     // Is this item locked for the current user?
-    const isLocked = eliteOnly && !isEliteUser;
+    const isLocked = !isEliteUser;
 
     const background = useMotionTemplate`
         radial-gradient(

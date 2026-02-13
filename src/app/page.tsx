@@ -3,7 +3,8 @@
 import { FuturisticBackground } from "@/components/ui/Background";
 import { Header } from "@/components/ui/Header";
 import { LogoBanner } from "@/components/ui/LogoBanner";
-import { Sparkles, CheckCircle2, Shield, Lock, ArrowRight, Star } from "lucide-react";
+import { Footer } from "@/components/ui/Footer";
+import { Sparkles, CheckCircle2, Shield, Lock, ArrowRight, Star, Rocket, Zap, Crown } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -214,114 +215,156 @@ export default function LandingPage() {
           <h3 className="text-4xl md:text-5xl font-black text-white tracking-tight">Planos Vitalícios Black Box</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* STANDARD PLAN */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* AÇÃO 30K */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative group"
+            className="group relative rounded-[2rem] bg-[#0A0A0A] border border-white/10 overflow-hidden hover:border-blue-500/50 transition-colors duration-500"
           >
-            {/* Subtle Inner Glow for Standard to give it more emphasis */}
-            <div className="absolute -inset-0.5 bg-white/5 rounded-[32px] blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
-
-            <div className="relative bg-[#0A0A0A] rounded-[30px] p-10 border border-white/10 h-full flex flex-col items-center hover:border-white/20 transition-colors">
-              <div className="inline-block px-4 py-1 rounded-full bg-white/5 text-white/60 text-[10px] font-bold mb-8 uppercase tracking-widest">
-                Plano Standard
+            <div className="p-8 flex flex-col h-full bg-gradient-to-b from-blue-500/5 to-transparent">
+              <div className="mb-6 flex items-center justify-between">
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+                  <Rocket className="w-6 h-6" />
+                </div>
+                <span className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-black text-blue-400 uppercase tracking-wider">
+                  Método
+                </span>
               </div>
 
-              <div className="flex items-baseline justify-center gap-2 mb-4 text-white">
-                <span className="text-2xl text-white/20 line-through">R$ 297</span>
-                <span className="text-6xl font-black tracking-tighter">R$ 67</span>
+              <h3 className="text-2xl font-black text-white mb-2 text-left">AÇÃO 30K</h3>
+              <p className="text-white/40 text-sm text-left mb-8 min-h-[40px]">
+                Vídeo aulas, contratos e estruturas validadas.
+              </p>
+
+              <div className="flex flex-col items-start mb-8">
+                <span className="text-white/20 text-xs font-bold line-through">De R$ 197</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-5xl font-black tracking-tighter text-white">R$ 33</span>
+                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest">/ Único</span>
+                </div>
               </div>
 
-              <p className="text-white/40 text-sm mb-10">Pagamento único. Acesso limitado aos assets básicos.</p>
-
-              <ul className="space-y-4 text-left mb-10 flex-grow w-full">
-                {[
-                  "Acesso a 50+ Contratos Blindados",
-                  "Aulas de Boas-vindas",
-                  "Atualizações Trimestrais",
-                  "Suporte via Ticket"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-white/60">
-                    <CheckCircle2 className="w-4 h-4 text-white/30" />
-                    {item}
+              <ul className="space-y-3 mb-8 flex-grow">
+                {["Vídeo Aulas Exclusivas", "Método Comprovado", "Contrato Profissional"].map((feat, i) => (
+                  <li key={i} className="flex items-center gap-3 text-xs font-medium text-white/60">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" /> {feat}
                   </li>
                 ))}
               </ul>
 
               <button
                 onClick={() => handlePurchase('standard')}
-                disabled={loading !== null}
-                className="w-full py-4 rounded-xl bg-white/10 text-white font-black uppercase tracking-widest border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all active:scale-[0.98] disabled:opacity-50"
+                className="w-full py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500 hover:border-blue-500 hover:text-white text-white/60 font-black uppercase tracking-widest transition-all text-xs"
               >
-                {loading === 'standard' ? "Processando..." : "Assinar Standard"}
+                Acessar Agora
               </button>
             </div>
           </motion.div>
 
-          {/* ELITE PLAN (Featured) */}
+          {/* COMBO BLACK BOX (Highlight) */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative group h-full"
+            transition={{ delay: 0.1 }}
+            className="group relative rounded-[2rem] bg-[#0A0A0A] border border-purple-500/30 overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.15)] scale-105 z-10"
           >
-            {/* Border Beam Effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#E1FD3F] via-[#A855F7] to-[#E1FD3F] rounded-[32px] opacity-40 blur-lg group-hover:opacity-70 transition-opacity duration-500 animate-pulse" />
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-purple-500 via-[#E1FD3F] to-purple-500" />
 
-            <div className="relative bg-[#0A0A0A] rounded-[30px] p-10 border border-[#E1FD3F]/20 h-full flex flex-col items-center overflow-hidden">
-              {/* Launcher/Badge effect from screenshot */}
-              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#E1FD3F] to-transparent" />
-
-              <div className="inline-block px-4 py-1 rounded-full bg-[#151515] border border-white/10 text-white text-[10px] font-bold mb-8 uppercase tracking-widest shadow-2xl">
-                LOTE DE LANÇAMENTO
+            <div className="p-8 flex flex-col h-full bg-gradient-to-b from-purple-500/10 to-transparent">
+              <div className="mb-6 flex items-center justify-between">
+                <div className="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                  <Crown className="w-7 h-7" />
+                </div>
+                <span className="px-3 py-1 rounded-full bg-[#E1FD3F] text-black text-[10px] font-black uppercase tracking-wider shadow-lg">
+                  Recomendado
+                </span>
               </div>
 
-              <div className="flex items-baseline justify-center gap-2 mb-4 text-white">
-                <span className="text-2xl text-white/40 line-through">R$ 597</span>
-                <span className="text-7xl font-black tracking-tighter">R$ 97</span>
+              <h3 className="text-3xl font-black text-white mb-2 text-left">COMBO ELITE</h3>
+              <p className="text-white/40 text-sm text-left mb-8 min-h-[40px]">
+                O arsenal completo. Ação 30k + Adão IA com desconto máximo.
+              </p>
+
+              <div className="flex flex-col items-start mb-8">
+                <span className="text-white/20 text-xs font-bold line-through">De R$ 497</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-6xl font-black tracking-tighter text-white">R$ 66</span>
+                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest">/ Único</span>
+                </div>
               </div>
 
-              <p className="text-white/50 text-sm mb-10">Pagamento único. Acesso vitalício VIP ao sistema.</p>
-
-              <ul className="space-y-4 text-left mb-10 flex-grow w-full">
-                {[
-                  "Acesso Vitalício a TODOS os produtos",
-                  "Adão IA (Inteligência Artificial)",
-                  "Anti-Gravity Performance Tracker",
-                  "Gestão 360 & Automações",
-                  "Comunidade VIP & Network",
-                  "Suporte Prioritário 24/7"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-white">
-                    <CheckCircle2 className="w-5 h-5 text-[#E1FD3F]" />
-                    {item}
+              <ul className="space-y-4 mb-10 flex-grow">
+                {["Tudo do Ação 30k", "Tudo do Adão IA", "Grupo de Networking", "Mentoria Mensal"].map((feat, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm font-bold text-white">
+                    <CheckCircle2 className="w-4 h-4 text-purple-400" /> {feat}
                   </li>
                 ))}
               </ul>
 
               <button
                 onClick={() => handlePurchase('elite')}
-                disabled={loading !== null}
-                className="w-full py-5 rounded-xl bg-[#E1FD3F] text-[#050505] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_40px_rgba(225,253,63,0.4)] disabled:opacity-50"
+                className="w-full py-5 rounded-xl bg-purple-500 text-white font-black uppercase tracking-widest hover:bg-purple-400 transition-all shadow-[0_0_30px_rgba(168,85,247,0.4)] text-xs flex items-center justify-center gap-2"
               >
-                {loading === 'elite' ? "Processando..." : "DESBLOQUEAR AGORA"}
+                Quero o Combo <ArrowRight className="w-4 h-4" />
               </button>
+            </div>
+          </motion.div>
 
-              <div className="mt-6 flex items-center justify-center gap-2 text-[10px] text-white/30 uppercase tracking-[0.2em]">
-                <Lock className="w-3 h-3" /> Pagamento Seguro & Criptografado
+          {/* ADÃO IA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="group relative rounded-[2rem] bg-[#0A0A0A] border border-white/10 overflow-hidden hover:border-[#E1FD3F]/50 transition-colors duration-500"
+          >
+            <div className="p-8 flex flex-col h-full bg-gradient-to-b from-[#E1FD3F]/5 to-transparent">
+              <div className="mb-6 flex items-center justify-between">
+                <div className="w-12 h-12 rounded-xl bg-[#E1FD3F]/10 flex items-center justify-center text-[#E1FD3F]">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <span className="px-3 py-1 rounded-full bg-[#E1FD3F]/10 border border-[#E1FD3F]/20 text-[10px] font-black text-[#E1FD3F] uppercase tracking-wider">
+                  Inteligência
+                </span>
               </div>
+
+              <h3 className="text-2xl font-black text-white mb-2 text-left">ADÃO IA</h3>
+              <p className="text-white/40 text-sm text-left mb-8 min-h-[40px]">
+                Sua IA pessoal treinada para vendas e copy.
+              </p>
+
+              <div className="flex flex-col items-start mb-8">
+                <span className="text-white/20 text-xs font-bold line-through">De R$ 297</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-5xl font-black tracking-tighter text-white">R$ 47</span>
+                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest">/ Único</span>
+                </div>
+              </div>
+
+              <ul className="space-y-3 mb-8 flex-grow">
+                {["IA Treinada em Vendas", "Scripts Prontos", "Suporte Dedicado"].map((feat, i) => (
+                  <li key={i} className="flex items-center gap-3 text-xs font-medium text-white/60">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#E1FD3F]" /> {feat}
+                  </li>
+                ))}
+              </ul>
+
+              <button
+                onClick={() => handlePurchase('standard')}
+                className="w-full py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-[#E1FD3F] hover:border-[#E1FD3F] hover:text-black text-white/60 font-black uppercase tracking-widest transition-all text-xs"
+              >
+                Acessar Agora
+              </button>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 text-center text-white/20 text-xs font-mono uppercase tracking-widest">
-        <p>Copyright © 2026 Black Box System • All Rights Reserved</p>
-      </footer>
+      <Footer />
     </main>
   );
 }

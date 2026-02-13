@@ -22,6 +22,7 @@ export default function DashboardPage() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [user, setUser] = useState<SupabaseUser | null>(null);
     const [logoUrl, setLogoUrl] = useState<string | null>(null);
+    const [purchasedProducts, setPurchasedProducts] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [loggingOut, setLoggingOut] = useState(false);
 
@@ -41,12 +42,22 @@ export default function DashboardPage() {
 
             // Fetch profile for logo
             if (user) {
-                const { data: profile } = await supabase
-                    .from("profiles")
-                    .select("logo_url")
-                    .eq("id", user.id)
-                    .single();
-                if (profile?.logo_url) setLogoUrl(profile.logo_url);
+                const [profileRes, productsRes] = await Promise.all([
+                    supabase
+                        .from("profiles")
+                        .select("logo_url")
+                        .eq("id", user.id)
+                        .single(),
+                    supabase
+                        .from("user_products")
+                        .select("product_id")
+                        .eq("user_id", user.id)
+                ]);
+
+                if (profileRes.data?.logo_url) setLogoUrl(profileRes.data.logo_url);
+                if (productsRes.data) {
+                    setPurchasedProducts(productsRes.data.map((p: { product_id: string }) => p.product_id));
+                }
             }
             setLoading(false);
         };
@@ -275,13 +286,25 @@ export default function DashboardPage() {
                         {["adao", "1", "2"].map((id, index) => {
                             const product = PRODUCTS.find(p => p.id === id);
                             if (!product) return null;
+
+                            // Access Logic:
+                            // adao -> unlocked if 'adao' or 'combo'
+                            // 1 (docs) & 2 (slides) -> unlocked if 'acao_30k' or 'combo'
+                            const hasCombo = purchasedProducts.includes('combo');
+                            const hasAdao = purchasedProducts.includes('adao') || hasCombo;
+                            const hasAcao30k = purchasedProducts.includes('acao_30k') || hasCombo;
+
+                            let isUnlocked = false;
+                            if (id === 'adao') isUnlocked = hasAdao;
+                            if (id === '1' || id === '2') isUnlocked = hasAcao30k;
+
                             return (
                                 <ProductCard
                                     key={product.id}
                                     product={product}
                                     index={index}
-                                    isEliteUser={user?.user_metadata?.plan === 'elite'}
-                                    forceEliteStyle={true}
+                                    isEliteUser={isUnlocked}
+                                    forceEliteStyle={hasCombo} // Only show premium style/badge if they have the combo
                                 />
                             );
                         })}

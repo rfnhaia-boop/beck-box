@@ -26,11 +26,22 @@ export default function LoginPage() {
         const checkUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
-                // Use user_metadata.role to determine redirect (no DB query needed)
-                if (user.user_metadata?.role === 'CLIENT_ADMIN') {
-                    router.push("/client/dashboard");
+                // Check if user has any products
+                const { data: products } = await supabase
+                    .from('user_products')
+                    .select('id')
+                    .eq('user_id', user.id);
+
+                if (products && products.length > 0) {
+                    // Has products -> Go to Sede/Dashboard
+                    if (user.user_metadata?.role === 'CLIENT_ADMIN') {
+                        router.push("/client/dashboard");
+                    } else {
+                        router.push("/sede");
+                    }
                 } else {
-                    router.push("/sede");
+                    // No products -> Go to Plans
+                    router.push("/plans");
                 }
             }
         };
@@ -56,18 +67,33 @@ export default function LoginPage() {
             });
 
             if (error) {
-                setError(error.message);
+                if (error.message.includes("Invalid login credentials")) {
+                    setError("Email ou senha incorretos.");
+                } else if (error.message.includes("Email not confirmed")) {
+                    setError("Email não confirmado. Verifique sua caixa de entrada.");
+                } else {
+                    setError(error.message);
+                }
                 setIsLoading(false);
                 return;
             }
 
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
-                // Use user_metadata.role to determine redirect (no DB query needed)
-                if (user.user_metadata?.role === 'CLIENT_ADMIN') {
-                    router.push("/client/dashboard");
+                // Check products
+                const { data: products } = await supabase
+                    .from('user_products')
+                    .select('id')
+                    .eq('user_id', user.id);
+
+                if (products && products.length > 0) {
+                    if (user.user_metadata?.role === 'CLIENT_ADMIN') {
+                        router.push("/client/dashboard");
+                    } else {
+                        router.push("/sede");
+                    }
                 } else {
-                    router.push("/sede");
+                    router.push("/plans");
                 }
                 router.refresh();
             }
@@ -106,7 +132,7 @@ export default function LoginPage() {
                 email,
                 password,
                 options: {
-                    emailRedirectTo: `${window.location.origin}/sede`,
+                    emailRedirectTo: `${window.location.origin}/plans`, // Redirect to plans after email confirm
                     data: {
                         company_name: companyName,
                     }
@@ -114,7 +140,12 @@ export default function LoginPage() {
             });
 
             if (error) {
-                setError(error.message);
+                if (error.message.includes("User already registered")) {
+                    setError("Este e-mail já possui cadastro. Faça login para acessar.");
+                    setMode("login");
+                } else {
+                    setError(error.message);
+                }
                 setIsLoading(false);
                 return;
             }

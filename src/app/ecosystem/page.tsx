@@ -6,139 +6,132 @@ import { Header } from "@/components/ui/Header";
 import {
     Shield, Cpu, Zap, MessageSquare, TrendingUp,
     Award, DollarSign, Rocket, Code2,
-    Database, Lock, Layers, ExternalLink
+    Database, Lock, Layers, ExternalLink, Bot
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function EcosystemPage() {
     return (
-        <main className="min-h-screen relative text-[#EFEFEF] overflow-x-hidden">
+        <main className="min-h-screen relative text-[#EFEFEF] overflow-x-hidden font-sans">
             <FuturisticBackground />
 
             {/* Grid mesh background */}
             <div className="fixed inset-0 -z-5 pointer-events-none">
-                <div className="absolute inset-0 opacity-[0.03]" style={{
+                <div className="absolute inset-0 opacity-[0.05]" style={{
                     backgroundImage: `linear-gradient(rgba(168, 85, 247, 0.4) 1px, transparent 1px), 
                                       linear-gradient(90deg, rgba(225, 253, 63, 0.4) 1px, transparent 1px)`,
-                    backgroundSize: "80px 80px",
-                    maskImage: "radial-gradient(ellipse 70% 70% at 50% 30%, black 20%, transparent 100%)"
+                    backgroundSize: "60px 60px",
+                    maskImage: "radial-gradient(ellipse 80% 80% at 50% 30%, black 20%, transparent 100%)"
                 }} />
             </div>
 
             {/* Radial glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-radial from-[#E1FD3F]/10 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-radial from-purple-500/10 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-gradient-radial from-[#E1FD3F]/5 via-transparent to-transparent pointer-events-none" />
 
             <Header />
 
-            <div className="pt-32 pb-20 px-6 max-w-6xl mx-auto relative z-10">
+            <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto relative z-10">
                 {/* Hero */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-20"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm mb-6">
+                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#0a0a0a] border border-[#E1FD3F]/30 text-sm mb-8 shadow-[0_0_20px_rgba(225,253,63,0.1)]">
                         <Rocket className="w-4 h-4 text-[#E1FD3F]" />
-                        Ecossistema Black Box
+                        <span className="text-[#E1FD3F] font-semibold tracking-wide">Ecossistema Black Box</span>
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                    <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tight">
                         A Força por Trás do
                         <br />
-                        <span className="text-[#E1FD3F]">Sistema Black Box</span>
+                        <span className="text-[#E1FD3F] drop-shadow-[0_0_30px_rgba(225,253,63,0.3)]">Sistema Black Box</span>
                     </h1>
-                    <p className="text-lg text-white/50 max-w-2xl mx-auto">
+                    <p className="text-lg md:text-xl text-white/40 max-w-3xl mx-auto font-light leading-relaxed">
                         Uma união estratégica entre engenharia de software de ponta e
                         metodologia de vendas comprovada que já gerou múltiplos 6 dígitos.
                     </p>
                 </motion.div>
 
                 {/* Bento Grid */}
-                <div className="grid md:grid-cols-2 gap-6 mb-16">
+                <div className="grid md:grid-cols-2 gap-8 mb-24">
 
-                    {/* NEW COMPANY Section */}
+                    {/* THE FACTORY - Purple Card */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-3xl border border-purple-500/20 p-8 relative overflow-hidden"
+                        className="group bg-[#0f0a14]/80 backdrop-blur-xl rounded-[2.5rem] border border-purple-500/20 p-10 relative overflow-hidden hover:border-purple-500/40 transition-all duration-500"
                     >
-                        <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/20 blur-3xl" />
+                        {/* Background Effects */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 blur-[80px] rounded-full group-hover:bg-purple-600/20 transition-all duration-500" />
+                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 mix-blend-overlay" />
 
                         <div className="relative z-10">
-                            <div className="flex items-center gap-4 mb-6">
-                                <Image src="/logos/new-logo.png" alt="New Company" width={80} height={32} className="h-8 w-auto" />
-                                <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold">THE FACTORY</span>
+                            {/* Header Badges */}
+                            <div className="flex items-center justify-between mb-8">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-purple-400 font-bold italic tracking-wider text-sm">NEW</span>
+                                </div>
+                                <span className="px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-bold tracking-widest uppercase">THE FACTORY</span>
                             </div>
 
-                            <h2 className="text-2xl font-bold mb-4">Tech-House de Inovação</h2>
-                            <p className="text-white/60 mb-8 leading-relaxed">
-                                A <span className="text-purple-300 font-semibold">New Company</span> é uma célula de inovação
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">Tech-House de Inovação</h2>
+
+                            <p className="text-white/50 mb-10 leading-relaxed text-sm">
+                                A <span className="text-purple-400 font-semibold">New Company</span> é uma célula de inovação
                                 focada em transformar fluxos complexos em interfaces de alta fidelidade.
-                                Este sistema foi construído sobre uma infraestrutura de segurança militar
-                                e design futurista.
+                                Este sistema foi construído sobre uma infraestrutura de segurança
+                                militar e design futurista.
                             </p>
 
                             <div className="space-y-4">
-                                <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
-                                    <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                                        <Shield className="w-5 h-5 text-purple-400" />
+                                {/* Item 1 */}
+                                <div className="flex items-start gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl group/item hover:bg-purple-500/10 hover:border-purple-500/20 transition-all">
+                                    <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                                        <Shield className="w-6 h-6 text-purple-400" />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-sm">Arquitetura de Segurança</h3>
-                                        <p className="text-xs text-white/40">URLs assinadas e buckets privados via Supabase</p>
+                                        <h3 className="font-bold text-base text-white mb-1">Arquitetura de Segurança</h3>
+                                        <p className="text-xs text-white/40 leading-relaxed">URLs assinadas e buckets privados via Supabase</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
-                                    <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                                        <Code2 className="w-5 h-5 text-purple-400" />
+                                {/* Item 2 */}
+                                <div className="flex items-start gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl group/item hover:bg-purple-500/10 hover:border-purple-500/20 transition-all">
+                                    <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                                        <Code2 className="w-6 h-6 text-purple-400" />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-sm">Next.js 14 + Supabase</h3>
-                                        <p className="text-xs text-white/40">Renderização híbrida para velocidade instantânea</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
-                                    <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                                        <MessageSquare className="w-5 h-5 text-purple-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-sm">Adão AI</h3>
-                                        <p className="text-xs text-white/40">Inteligência conversacional via n8n + Gemini</p>
+                                        <h3 className="font-bold text-base text-white mb-1">Next.js 14 + Supabase</h3>
+                                        <p className="text-xs text-white/40 leading-relaxed">Renderização híbrida para velocidade instantânea</p>
                                     </div>
                                 </div>
                             </div>
-
-                            <a
-                                href="#"
-                                className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-xl bg-purple-500 text-white font-bold hover:bg-purple-400 transition-all"
-                            >
-                                Desenvolva com a New Company
-                                <ExternalLink className="w-4 h-4" />
-                            </a>
                         </div>
                     </motion.div>
 
-                    {/* OTA Section */}
+                    {/* THE MINDSET - Green Card */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="bg-gradient-to-br from-[#E1FD3F]/10 to-[#E1FD3F]/5 rounded-3xl border border-[#E1FD3F]/20 p-8 relative overflow-hidden"
+                        className="group bg-[#0a0f0a]/80 backdrop-blur-xl rounded-[2.5rem] border border-[#E1FD3F]/20 p-10 relative overflow-hidden hover:border-[#E1FD3F]/40 transition-all duration-500"
                     >
-                        <div className="absolute top-0 right-0 w-40 h-40 bg-[#E1FD3F]/20 blur-3xl" />
+                        {/* Background Effects */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[#E1FD3F]/10 blur-[80px] rounded-full group-hover:bg-[#E1FD3F]/20 transition-all duration-500" />
+                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 mix-blend-overlay" />
 
                         <div className="relative z-10">
-                            <div className="flex items-center gap-4 mb-6">
-                                <Image src="/logos/partner-logo.png" alt="OTA" width={80} height={32} className="h-6 w-auto invert" />
-                                <span className="px-3 py-1 rounded-full bg-[#E1FD3F]/20 text-[#E1FD3F] text-xs font-bold">THE MINDSET</span>
+                            {/* Header Badges */}
+                            <div className="flex items-center justify-between mb-8">
+                                <span className="text-[#4F4F4F] font-bold text-xl tracking-tighter">OTAH<span className="font-light">studio</span></span>
+                                <span className="px-4 py-1.5 rounded-full bg-[#E1FD3F]/10 border border-[#E1FD3F]/20 text-[#E1FD3F] text-xs font-bold tracking-widest uppercase">THE MINDSET</span>
                             </div>
 
-                            <h2 className="text-2xl font-bold mb-4">Branding & Profit Strategy</h2>
-                            <p className="text-white/60 mb-8 leading-relaxed">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">Branding & Profit Strategy</h2>
+
+                            <p className="text-white/50 mb-10 leading-relaxed text-sm">
                                 <span className="text-[#E1FD3F] font-semibold">OTA</span> é a marca de Branding e Vendas
                                 liderada pelo Otávio. A metodologia aplicada na Caixa Preta já gerou
                                 múltiplos dígitos no mercado de ativos digitais. O foco é transformar
@@ -146,72 +139,31 @@ export default function EcosystemPage() {
                             </p>
 
                             <div className="space-y-4">
-                                <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
-                                    <div className="w-10 h-10 rounded-lg bg-[#E1FD3F]/20 flex items-center justify-center flex-shrink-0">
-                                        <TrendingUp className="w-5 h-5 text-[#E1FD3F]" />
+                                {/* Item 1 */}
+                                <div className="flex items-start gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl group/item hover:bg-[#E1FD3F]/10 hover:border-[#E1FD3F]/20 transition-all">
+                                    <div className="w-12 h-12 rounded-xl bg-[#E1FD3F]/10 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                                        <TrendingUp className="w-6 h-6 text-[#E1FD3F]" />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-sm">Metodologia de Escala</h3>
-                                        <p className="text-xs text-white/40">Design focado em conversão e percepção de valor</p>
+                                        <h3 className="font-bold text-base text-white mb-1">Metodologia de Escala</h3>
+                                        <p className="text-xs text-white/40 leading-relaxed">Design focado em conversão e percepção de valor</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
-                                    <div className="w-10 h-10 rounded-lg bg-[#E1FD3F]/20 flex items-center justify-center flex-shrink-0">
-                                        <Award className="w-5 h-5 text-[#E1FD3F]" />
+                                {/* Item 2 */}
+                                <div className="flex items-start gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl group/item hover:bg-[#E1FD3F]/10 hover:border-[#E1FD3F]/20 transition-all">
+                                    <div className="w-12 h-12 rounded-xl bg-[#E1FD3F]/10 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                                        <Award className="w-6 h-6 text-[#E1FD3F]" />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-sm">Brand Equity</h3>
-                                        <p className="text-xs text-white/40">De operador de software a consultor de alto ticket</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
-                                    <div className="w-10 h-10 rounded-lg bg-[#E1FD3F]/20 flex items-center justify-center flex-shrink-0">
-                                        <DollarSign className="w-5 h-5 text-[#E1FD3F]" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-sm">Resultados Comprovados</h3>
-                                        <p className="text-xs text-white/40">Múltiplos 6 dígitos em ativos digitais</p>
+                                        <h3 className="font-bold text-base text-white mb-1">Brand Equity</h3>
+                                        <p className="text-xs text-white/40 leading-relaxed">De operador de software a consultor de alto ticket</p>
                                     </div>
                                 </div>
                             </div>
-
-                            <a
-                                href="#"
-                                className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-xl bg-[#E1FD3F] text-[#0a0a0a] font-bold hover:scale-105 transition-all"
-                            >
-                                Conheça a Metodologia OTA
-                                <ExternalLink className="w-4 h-4" />
-                            </a>
                         </div>
                     </motion.div>
                 </div>
-
-                {/* Tech Stack */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="bg-[#171717] rounded-3xl border border-white/10 p-8 mb-16"
-                >
-                    <h2 className="text-xl font-bold mb-6 text-center">Stack Tecnológico</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        {[
-                            { icon: Code2, label: "Next.js 14", desc: "React Framework" },
-                            { icon: Database, label: "Supabase", desc: "Backend as Service" },
-                            { icon: Lock, label: "RLS", desc: "Row Level Security" },
-                            { icon: Layers, label: "Framer Motion", desc: "Animações" },
-                            { icon: Cpu, label: "Gemini AI", desc: "Inteligência" },
-                        ].map((tech, i) => (
-                            <div key={i} className="text-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all">
-                                <tech.icon className="w-8 h-8 text-[#E1FD3F] mx-auto mb-2" />
-                                <p className="font-bold text-sm">{tech.label}</p>
-                                <p className="text-xs text-white/40">{tech.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
 
                 {/* Footer CTA */}
                 <motion.div
@@ -220,10 +172,9 @@ export default function EcosystemPage() {
                     transition={{ delay: 0.5 }}
                     className="text-center"
                 >
-                    <p className="text-white/40 mb-4">Pronto para transformar seu negócio?</p>
                     <Link
-                        href="/dashboard"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-[#E1FD3F] to-[#c5df30] text-[#0a0a0a] font-bold text-lg hover:scale-105 transition-all shadow-lg shadow-[#E1FD3F]/20"
+                        href="/auth/register" // Redirecting to register/login flow
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#E1FD3F] text-[#0a0a0a] font-bold text-lg hover:scale-105 transition-all shadow-lg shadow-[#E1FD3F]/20"
                     >
                         <Zap className="w-5 h-5" />
                         Acessar a Black Box
@@ -231,23 +182,22 @@ export default function EcosystemPage() {
                 </motion.div>
             </div>
 
-            {/* Footer */}
-            <footer className="border-t border-white/10 mt-20 relative z-10">
-                <div className="max-w-6xl mx-auto px-6 py-8">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                            <div className="w-8 h-8 rounded-lg bg-[#E1FD3F] flex items-center justify-center font-black text-[#0a0a0a]">B</div>
-                            <span className="text-sm text-white/40">Black Box © 2024</span>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <span className="text-xs text-white/30">Powered by</span>
-                            <Image src="/logos/new-logo.png" alt="New Company" width={40} height={16} className="h-4 w-auto opacity-60" />
-                            <span className="text-white/20">×</span>
-                            <Image src="/logos/partner-logo.png" alt="OTA" width={40} height={16} className="h-3 w-auto invert opacity-60" />
-                        </div>
+            {/* Floating Chat Button */}
+            <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1 }}
+                className="fixed bottom-8 right-8 z-50"
+            >
+                <div className="relative group cursor-pointer">
+                    <div className="absolute inset-0 bg-[#E1FD3F] blur-lg opacity-40 group-hover:opacity-60 transition-opacity rounded-full" />
+                    <div className="relative w-14 h-14 bg-[#E1FD3F] rounded-full flex items-center justify-center text-[#0a0a0a] shadow-xl transition-transform group-hover:scale-110">
+                        {/* Using MessageSquare as fallback if Bot isn't imported, but assuming we can add it */}
+                        <Bot className="w-7 h-7" />
+                        <div className="absolute top-0 right-0 w-3 h-3 bg-white rounded-full border-2 border-[#E1FD3F]" />
                     </div>
                 </div>
-            </footer>
+            </motion.div>
         </main>
     );
 }

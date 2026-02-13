@@ -11,7 +11,19 @@ export async function GET(request: Request) {
         const { error } = await supabase.auth.exchangeCodeForSession(code)
 
         if (!error) {
-            return NextResponse.redirect(`${origin}${next}`)
+            const { data: { user } } = await supabase.auth.getUser();
+            // Check if user has any products
+            const { data: products } = await supabase
+                .from('user_products')
+                .select('id')
+                .eq('user_id', user?.id)
+                .single(); // Use single/maybeSingle or limit(1) to check existence efficiently
+
+            if (products) {
+                return NextResponse.redirect(`${origin}/sede`)
+            } else {
+                return NextResponse.redirect(`${origin}/plans`)
+            }
         }
     }
 
