@@ -1,10 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 import React, { useRef, useState, useEffect } from "react";
 
-interface LiquidGlassProps extends React.HTMLAttributes<HTMLDivElement> {
+interface LiquidGlassProps extends HTMLMotionProps<"div"> {
     intensity?: "low" | "medium" | "high";
     color?: string;
     children?: React.ReactNode;
@@ -58,31 +58,31 @@ export const LiquidGlass = ({
             style={{
                 boxShadow: `
                     0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                    0 0 0 1px inset rgba(255, 255, 255, 0.1),
-                    0 0 20px 0 rgba(255, 255, 255, 0.05) inset
+                    0 0 0 1px rgba(255, 255, 255, 0.1),
+                    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+                    /* Simulated Chromatic Dispersion (Red/Blue shift) */
+                    -1px -1px 2px 0 rgba(255, 0, 0, 0.1) inset,
+                    1px 1px 2px 0 rgba(0, 0, 255, 0.1) inset
                 `
             }}
             {...props}
         >
-            {/* Chromatic Dispersion / Prismatic Edge Effect */}
-            <div className="absolute inset-0 rounded-[40px] pointer-events-none opacity-50 mix-blend-overlay bg-gradient-to-br from-white/10 via-transparent to-black/10" />
-            <div className="absolute top-0 left-0 right-0 h-[150px] bg-gradient-to-b from-white/20 to-transparent opacity-40 mix-blend-overlay pointer-events-none" />
+            {/* Fresnel Reflection (Edge Light) - Enhanced based on shader logic */}
+            <div className="absolute inset-0 rounded-[40px] ring-1 ring-inset ring-white/20 pointer-events-none" />
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent opacity-90" />
+            <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-50 pointer-events-none rounded-[40px]" />
 
             {/* Dynamic Glare Highlight based on mouse */}
             <div
-                className="absolute w-[300px] h-[300px] bg-white rounded-full mix-blend-overlay blur-[80px] opacity-20 pointer-events-none transition-transform duration-75"
+                className="absolute w-[400px] h-[400px] bg-white rounded-full mix-blend-overlay blur-[100px] opacity-15 pointer-events-none transition-transform duration-75"
                 style={{
-                    transform: `translate(${mousePosition.x - 150}px, ${mousePosition.y - 150}px)`
+                    transform: `translate(${mousePosition.x - 200}px, ${mousePosition.y - 200}px)`
                 }}
             />
 
-            {/* Fresnel Reflection (Edge Light) */}
-            <div className="absolute inset-0 rounded-[40px] ring-1 ring-inset ring-white/20 pointer-events-none" />
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-70" />
-            <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-30" />
-
-            {/* Refraction Noise Texture (Subtle) */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+            {/* Refraction Noise Texture */}
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat mix-blend-overlay" />
 
             <div className="relative z-10 h-full">
                 {children}

@@ -1,6 +1,7 @@
 "use client";
 
 import { FuturisticBackground } from "@/components/ui/Background";
+import { Header } from "@/components/ui/Header";
 import { Footer } from "@/components/ui/Footer";
 import { LiquidGlass } from "@/components/ui/LiquidGlass";
 import { createClient } from "@/lib/supabase/client";
@@ -75,9 +76,10 @@ export default function ComboSalesPage() {
     return (
         <main className="min-h-screen relative bg-[#050505] text-white overflow-x-hidden font-sans selection:bg-purple-500 selection:text-white">
             <FuturisticBackground />
+            <Header />
 
             {/* Hero Section */}
-            <section className="relative z-10 pt-32 pb-20 px-6">
+            <section className="relative z-10 pt-40 pb-20 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -106,27 +108,88 @@ export default function ComboSalesPage() {
                         O arsenal completo. Leve o <span className="text-blue-400 font-bold">Ação 30k</span> e o <span className="text-[#E1FD3F] font-bold">Adão IA</span> juntos com desconto máximo.
                         A escolha lógica para quem não brinca em serviço.
                     </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="flex flex-col md:flex-row gap-6 w-full max-w-lg"
-                    >
-                        <button
-                            onClick={handlePurchase}
-                            disabled={loading || checkingAccess}
-                            className="flex-1 py-6 px-8 rounded-2xl bg-purple-500 text-white font-black uppercase tracking-[0.2em] hover:bg-purple-600 transition-all shadow-[0_0_50px_rgba(168,85,247,0.4)] hover:scale-[1.02] flex items-center justify-center gap-3"
-                        >
-                            {loading ? "Processando..." : hasAccess ? "Acessar Bunker" : "Desbloquear Tudo - R$ 66"}
-                            {!loading && <ArrowRight className="w-5 h-5" />}
-                        </button>
-                    </motion.div>
                 </div>
             </section>
 
-            {/* Stack Effect */}
-            <section className="relative z-10 pb-24 px-6">
+            {/* MODULE 1: COMPARATIVE ADVANTAGE */}
+            <section className="relative z-10 py-20 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <LiquidGlass className="p-12 relative overflow-hidden bg-white/[0.02] border-white/5">
+                        <div className="grid md:grid-cols-2 gap-16 items-center">
+                            <div>
+                                <h2 className="text-3xl font-black mb-6">Por que o Combo?</h2>
+                                <div className="space-y-6">
+                                    <div className="flex gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0">
+                                            <Layers className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold mb-1">Integração Total</h3>
+                                            <p className="text-white/50 leading-relaxed">
+                                                O método do <span className="text-blue-400">Ação 30k</span> ensina a estratégia, o <span className="text-[#E1FD3F]">Adão IA</span> executa a operação. Use os scripts do Adão nas propostas do Ação.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-[#E1FD3F]/10 flex items-center justify-center text-[#E1FD3F] shrink-0">
+                                            <Zap className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold mb-1">Velocidade de Implementação</h3>
+                                            <p className="text-white/50 leading-relaxed">
+                                                Quem tem os dois implementa 3x mais rápido. Você não perde tempo criando copy ou contratos do zero. Está tudo pronto.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 shrink-0">
+                                            <Star className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold mb-1">Economia Inteligente</h3>
+                                            <p className="text-white/50 leading-relaxed">
+                                                Comprando separado você gasta quase R$ 500. No Combo, você leva tudo por uma fração do preço real das ferramentas.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Value Visualization */}
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-[60px] rounded-full" />
+                                <div className="relative z-10 space-y-4">
+                                    {/* Individual Prices */}
+                                    <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 opacity-50">
+                                        <span className="font-bold">Ação 30k (Separado)</span>
+                                        <span className="font-mono line-through">R$ 197</span>
+                                    </div>
+                                    <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 opacity-50">
+                                        <span className="font-bold">Adão IA (Separado)</span>
+                                        <span className="font-mono line-through">R$ 297</span>
+                                    </div>
+
+                                    {/* Combo Price */}
+                                    <div className="flex items-center justify-between p-6 rounded-2xl bg-gradient-to-r from-purple-500/20 to-purple-900/20 border border-purple-500/50 relative overflow-hidden group">
+                                        <div className="absolute inset-0 bg-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <div className="flex items-center gap-3">
+                                            <Crown className="w-6 h-6 text-purple-400" />
+                                            <span className="font-black text-xl tracking-wide">COMBO ELITE</span>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-xs text-purple-300 uppercase tracking-widest mb-1">Apenas Hoje</div>
+                                            <span className="font-black text-4xl text-purple-400">R$ 66</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </LiquidGlass>
+                </div>
+            </section>
+
+            {/* Stack Effect & CTA */}
+            <section className="relative z-10 pb-32 px-6">
                 <div className="max-w-4xl mx-auto relative flex justify-center">
                     {/* Card 1 - Adão (Behind) */}
                     <motion.div
@@ -178,13 +241,22 @@ export default function ComboSalesPage() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between items-center pt-8 border-t border-white/10 relative z-10">
+                        <div className="flex justify-between items-center pt-8 border-t border-white/10 relative z-10 mb-8">
                             <div className="flex flex-col">
                                 <span className="text-xs text-white/30 line-through">R$ 497</span>
                                 <span className="text-5xl font-black">R$ 66</span>
                             </div>
                             <span className="text-xs font-black uppercase tracking-[0.2em] text-purple-500">Pagamento Único</span>
                         </div>
+
+                        <button
+                            onClick={handlePurchase}
+                            disabled={loading || checkingAccess}
+                            className="w-full py-6 px-8 rounded-2xl bg-purple-500 text-white font-black uppercase tracking-[0.2em] hover:bg-purple-600 transition-all shadow-[0_0_50px_rgba(168,85,247,0.4)] hover:scale-[1.02] flex items-center justify-center gap-3 relative z-10"
+                        >
+                            {loading ? "Processando..." : hasAccess ? "Acessar Bunker" : "Desbloquear Tudo"}
+                            {!loading && <ArrowRight className="w-5 h-5" />}
+                        </button>
                     </LiquidGlass>
                 </div>
             </section>

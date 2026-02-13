@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -11,6 +11,7 @@ import { User as UserIcon, LogOut } from "lucide-react";
 
 export const Header = () => {
     const [isHovered, setIsHovered] = useState(false);
+    const [isProductsOpen, setIsProductsOpen] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const supabase = createClient();
     const router = useRouter();
@@ -38,12 +39,14 @@ export const Header = () => {
 
     const guestNavItems = [
         { label: "Home", href: "/" },
+        { label: "Produtos", href: "/products", isDropdown: true },
         { label: "Blog", href: "/blog" },
     ];
 
     const loggedInNavItems = [
+        { label: "Home", href: "/" },
         { label: "Sede", href: "/sede" },
-        { label: "Ecossistema", href: "/sede/ecosystem" },
+        { label: "Produtos", href: "/products", isDropdown: true },
         { label: "Blog", href: "/blog" },
     ];
 
@@ -78,6 +81,59 @@ export const Header = () => {
             <div className="hidden md:flex gap-1 items-center">
                 {currentNavItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
+
+                    if (item.isDropdown) {
+                        return (
+                            <div
+                                key={item.label}
+                                className="relative px-4 py-2 group cursor-pointer"
+                                onMouseEnter={() => setIsProductsOpen(true)}
+                                onMouseLeave={() => setIsProductsOpen(false)}
+                            >
+                                <span className={`relative z-10 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 flex items-center gap-1.5 ${isProductsOpen ? 'text-[#E1FD3F]' : 'text-white/40 group-hover:text-white'}`}>
+                                    {item.label}
+                                </span>
+
+                                <AnimatePresence>
+                                    {isProductsOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-2 rounded-2xl bg-[#101010] border border-white/5 shadow-2xl backdrop-blur-3xl z-50 overflow-hidden"
+                                        >
+                                            <div className="absolute inset-0 bg-gradient-to-b from-[#E1FD3F]/5 to-transparent pointer-events-none" />
+
+                                            {[
+                                                { label: "Adão IA", href: "/adao", desc: "Inteligência Comercial", color: "#E1FD3F" },
+                                                { label: "Ação 30k", href: "/acao", desc: "Método de Escala", color: "#3B82F6" },
+                                                { label: "Combo Elite", href: "/combo", desc: "O Arsenal Completo", color: "#A855F7" }
+                                            ].map((prod) => (
+                                                <Link
+                                                    key={prod.href}
+                                                    href={prod.href}
+                                                    className="flex flex-col p-4 rounded-xl hover:bg-white/[0.03] transition-colors group/item"
+                                                >
+                                                    <span className="text-[10px] font-black uppercase tracking-widest text-white group-hover/item:text-[#E1FD3F] transition-colors" style={{ color: prod.color }}>
+                                                        {prod.label}
+                                                    </span>
+                                                    <span className="text-[9px] font-medium text-white/30 uppercase tracking-[0.15em] mt-1">
+                                                        {prod.desc}
+                                                    </span>
+                                                </Link>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                <motion.div
+                                    className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E1FD3F] shadow-[0_0_10px_#E1FD3F] transition-all duration-500 ${isProductsOpen ? 'opacity-100' : 'opacity-0 scale-0 group-hover:opacity-40 group-hover:scale-100'}`}
+                                />
+                            </div>
+                        );
+                    }
+
                     return (
                         <Link
                             key={item.href}

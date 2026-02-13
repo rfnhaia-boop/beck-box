@@ -32,6 +32,161 @@ const BentoItem = ({ title, description, icon: Icon, className, delay = 0, purpl
   </motion.div>
 );
 
+// --- Products Navigator Section ---
+const ProductsNavigator = () => {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const products = [
+    {
+      id: "adao",
+      name: "Adão IA",
+      tagline: "INTELIGÊNCIA COMERCIAL",
+      description: "A IA que elimina a sua insegurança nas reuniões e negocia por você. Transforme objeções em contratos assinados.",
+      link: "/adao",
+      color: "#E1FD3F",
+      icon: Zap
+    },
+    {
+      id: "acao",
+      name: "Ação 30k",
+      tagline: "MÉTODO DE ESCALA",
+      description: "O plano de execução brutal. Aulas práticas, contratos jurídicos blindados e a infraestrutura para os seus primeiros 30k.",
+      link: "/acao",
+      color: "#3B82F6",
+      icon: Rocket
+    },
+    {
+      id: "combo",
+      name: "Combo Elite",
+      tagline: "O ARSENAL COMPLETO",
+      description: "Acesso total e vitalício ao Ecossistema Black Box. Leve o Adão IA e o Ação 30k com a maior vantagem comercial.",
+      link: "/combo",
+      color: "#A855F7",
+      icon: Crown
+    }
+  ];
+
+  return (
+    <div className="flex flex-col gap-12">
+      {/* Tab Selectors */}
+      <div className="flex flex-wrap justify-center gap-4">
+        {products.map((product, idx) => (
+          <button
+            key={product.id}
+            onClick={() => setActiveTab(idx)}
+            className={`relative px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300 overflow-hidden border ${activeTab === idx
+              ? "bg-white/5 border-white/20 text-white shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+              : "bg-transparent border-white/5 text-white/30 hover:text-white/60 hover:bg-white/[0.02]"
+              }`}
+          >
+            {activeTab === idx && (
+              <motion.div
+                layoutId="activeTabGlow"
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none"
+              />
+            )}
+            <span className="relative z-10">{product.name}</span>
+            {activeTab === idx && (
+              <motion.div
+                layoutId="activeTabUnderline"
+                className="absolute bottom-0 left-0 right-0 h-0.5"
+                style={{ backgroundColor: product.color }}
+              />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Content Card */}
+      <div className="relative min-h-[500px] flex items-center justify-center">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-5xl rounded-[2.5rem] bg-white/[0.02] border border-white/10 p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 backdrop-blur-3xl overflow-hidden group"
+        >
+          {/* Background Accent - Stronger Neon Glow */}
+          <div
+            className="absolute -top-24 -right-24 p-[300px] blur-[150px] rounded-full opacity-20 pointer-events-none transition-colors duration-700 animate-pulse"
+            style={{ backgroundColor: products[activeTab].color }}
+          />
+
+          {/* Left Side: Product Info */}
+          <div className="flex-1 text-left relative z-10">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border mb-6 text-[10px] font-black tracking-[0.3em] uppercase"
+              style={{
+                borderColor: `${products[activeTab].color}40`,
+                color: products[activeTab].color,
+                backgroundColor: `${products[activeTab].color}10`
+              }}
+            >
+              {products[activeTab].tagline}
+            </div>
+            <h4 className="text-5xl md:text-7xl font-black text-white mb-6 leading-none">
+              {products[activeTab].name}
+            </h4>
+            <p className="text-xl text-white/50 font-medium leading-relaxed mb-10 max-w-xl">
+              {products[activeTab].description}
+            </p>
+            <Link
+              href={products[activeTab].link}
+              className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm transition-all shadow-2xl hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: products[activeTab].color,
+                color: activeTab === 0 ? "#050505" : "#FFFFFF",
+                boxShadow: `0 0 40px ${products[activeTab].color}30`
+              }}
+            >
+              Ver Detalhes <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+
+          {/* Right Side: Visual Element */}
+          <div className="flex-1 w-full flex justify-center items-center relative z-10">
+            <div className="relative w-full aspect-square max-w-[400px]">
+              {/* Animated Rings */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 border border-dashed rounded-full opacity-20"
+                style={{ borderColor: products[activeTab].color }}
+              />
+              <div className="absolute inset-8 border border-white/10 rounded-full" />
+
+              {/* Main Icon */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                {(() => {
+                  const ProductIcon = products[activeTab].icon;
+                  return (
+                    <>
+                      <ProductIcon
+                        className="w-32 h-32 opacity-20"
+                        style={{ color: products[activeTab].color }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center filter blur-3xl opacity-20">
+                        <ProductIcon
+                          className="w-48 h-48"
+                          style={{ color: products[activeTab].color }}
+                        />
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+
+              {/* Tech accents - cleaner approach */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-gradient-to-b from-white/20 to-transparent" />
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
 // --- Page Component ---
 export default function LandingPage() {
   const router = useRouter();
@@ -138,6 +293,16 @@ export default function LandingPage() {
 
       {/* --- LOGO BANNER --- */}
       <LogoBanner />
+
+      {/* --- PRODUCTS SECTION --- */}
+      <section id="products" className="py-32 px-6 max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-sm font-bold text-[#E1FD3F] tracking-[0.2em] uppercase mb-4">Portfólio</h2>
+          <h3 className="text-4xl md:text-5xl font-black text-white tracking-tight">Escolha sua Arma</h3>
+        </div>
+
+        <ProductsNavigator />
+      </section>
 
       {/* --- THE ARSENAL (BENTO GRID) --- */}
       <section id="arsenal" className="py-32 px-6 max-w-7xl mx-auto relative z-10">
